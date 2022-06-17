@@ -23,5 +23,7 @@ Route::get('/news.html',[\App\Http\Controllers\Customer\CustomerController::clas
 Route::get('/services.html',[\App\Http\Controllers\Customer\CustomerController::class,'services'])->name('customer.services');
 Route::get('/contact.html',[\App\Http\Controllers\Customer\CustomerController::class,'contact'])->name('customer.contact');
 
-Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::prefix('admin')->group(function () {
+        Auth::routes();
+        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
