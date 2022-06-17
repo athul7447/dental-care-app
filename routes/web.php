@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::get('/',[\App\Http\Controllers\Customer\CustomerController::class,'index'])->name('customer.index');
+Route::get('/about-us.html',[\App\Http\Controllers\Customer\CustomerController::class,'about'])->name('customer.about');
+Route::get('/news.html',[\App\Http\Controllers\Customer\CustomerController::class,'news'])->name('customer.news');
+Route::get('/services.html',[\App\Http\Controllers\Customer\CustomerController::class,'services'])->name('customer.services');
+Route::get('/contact.html',[\App\Http\Controllers\Customer\CustomerController::class,'contact'])->name('customer.contact');
