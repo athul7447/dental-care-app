@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,5 +28,6 @@ Route::prefix('admin')->group(function () {
         Route::get('', [\App\Http\Controllers\Auth\LoginController::class,'showLoginForm'])->name('login');
         Route::post('login/submit',[\App\Http\Controllers\Auth\LoginController::class,'login'])->name('login.submit');
         Route::post('logout', [\App\Http\Controllers\Auth\LoginController::class,'logout'])->name('logout');
-        Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        Route::get('/dashboard',[\App\Http\Controllers\Admin\AdminController::class,'dashboard'])->name('admin.dashboard');
 });
