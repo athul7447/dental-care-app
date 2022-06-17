@@ -24,6 +24,8 @@ Route::get('/services.html',[\App\Http\Controllers\Customer\CustomerController::
 Route::get('/contact.html',[\App\Http\Controllers\Customer\CustomerController::class,'contact'])->name('customer.contact');
 
 Route::prefix('admin')->group(function () {
-        Auth::routes();
+        Route::get('', [\App\Http\Controllers\Auth\LoginController::class,'showLoginForm'])->name('login');
+        Route::post('login/submit',[\App\Http\Controllers\Auth\LoginController::class,'login'])->name('login.submit');
+        Route::post('logout', [\App\Http\Controllers\Auth\LoginController::class,'logout'])->name('logout');
         Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 });
