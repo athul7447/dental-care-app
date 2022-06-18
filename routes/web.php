@@ -25,9 +25,12 @@ Route::get('/services.html',[\App\Http\Controllers\Customer\CustomerController::
 Route::get('/contact.html',[\App\Http\Controllers\Customer\CustomerController::class,'contact'])->name('customer.contact');
 
 Route::prefix('admin')->group(function () {
-        Route::get('', [\App\Http\Controllers\Auth\LoginController::class,'showLoginForm'])->name('login');
-        Route::post('login/submit',[\App\Http\Controllers\Auth\LoginController::class,'login'])->name('login.submit');
-        Route::post('logout', [\App\Http\Controllers\Auth\LoginController::class,'logout'])->name('logout');
-        // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-        Route::get('/dashboard',[\App\Http\Controllers\Admin\AdminController::class,'dashboard'])->name('admin.dashboard');
+    Route::get('', [\App\Http\Controllers\Auth\LoginController::class,'showLoginForm'])->name('login');
+    Route::post('login/submit',[\App\Http\Controllers\Auth\LoginController::class,'login'])->name('login.submit');
+    Route::post('logout', [\App\Http\Controllers\Admin\AdminController::class,'logout'])->name('logout');
+    Route::name('admin.')->group(function () {
+        Route::get('/dashboard',[\App\Http\Controllers\Admin\AdminController::class,'dashboard'])->name('dashboard');
+        Route::get('/profile',[\App\Http\Controllers\Admin\AdminController::class,'profile'])->name('profile');
+        Route::post('/profile/update',[\App\Http\Controllers\Admin\AdminController::class,'updateProfile'])->name('profile.update');
+    });
 });
