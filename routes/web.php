@@ -34,3 +34,10 @@ Route::prefix('admin')->group(function () {
         Route::post('/profile/update',[\App\Http\Controllers\Admin\AdminController::class,'updateProfile'])->name('profile.update');
     });
 });
+
+Route::prefix('portal')->name('portal.')->group(function () {
+    Route::get('/login',[\App\Http\Controllers\Portal\LoginController::class,'login'])->name('login');
+    Route::get('/register',[\App\Http\Controllers\Portal\LoginController::class,'register'])->name('register');
+    Route::post('/register/submit',[\App\Http\Controllers\Portal\LoginController::class,'registerSubmit'])->name('register.submit');
+    Route::get('/dashboard',[\App\Http\Controllers\Doctor\DoctorContoller::class,'dashboard'])->name('dashboard');
+});

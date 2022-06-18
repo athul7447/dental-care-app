@@ -64,7 +64,7 @@
         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
           <div class="app-brand demo">
             <img src="{{asset('admin_assets/img/favicon/fav_icon.png')}}" alt="logo" style="height: 50px;">
-            <a href="index.html" class="app-brand-link">
+            <a href="{{ route('admin.dashboard') }}" class="app-brand-link">
               <span class="demo menu-text fw-bolder ms-2">DENTE ADMIN</span>
             </a>
 
