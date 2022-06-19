@@ -9,9 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class DoctorContoller extends Controller
 {
-    public function __construct()
-    {
-
+    public function __construct() {
+        $this->middleware('auth:portal');
     }
 
     public function dashboard()

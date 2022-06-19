@@ -37,7 +37,9 @@ Route::prefix('admin')->group(function () {
 
 Route::prefix('portal')->name('portal.')->group(function () {
     Route::get('/login',[\App\Http\Controllers\Portal\LoginController::class,'login'])->name('login');
+    Route::post('/login/submit',[\App\Http\Controllers\Portal\LoginController::class,'loginSubmit'])->name('login.submit');
     Route::get('/register',[\App\Http\Controllers\Portal\LoginController::class,'register'])->name('register');
     Route::post('/register/submit',[\App\Http\Controllers\Portal\LoginController::class,'registerSubmit'])->name('register.submit');
+    Route::post('/logout',[\App\Http\Controllers\Portal\LoginController::class,'logout'])->name('logout');
     Route::get('/dashboard',[\App\Http\Controllers\Doctor\DoctorContoller::class,'dashboard'])->name('dashboard');
 });
