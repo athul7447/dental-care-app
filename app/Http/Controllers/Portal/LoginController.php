@@ -26,7 +26,15 @@ class LoginController extends Controller
         ]);
         $credentials = $request->only('email', 'password');
         if (Auth::guard('portal')->attempt($credentials)) {
+            if(Auth::guard('portal')->user()->is_verified == 0){
+                Auth::guard('portal')->logout();
+                return redirect()->route('portal.login')->with('error', 'Veficatiion under process!');
+            }elseif(Auth::guard('portal')->user()->is_active == 0){
+                return redirect()->route('portal.login')->with('error', 'Your account is locked!');
+            }
+            else{
             return redirect()->route('portal.dashboard');
+            }
         }
 
         return redirect()->route('portal.login')->with('error', 'Invalid credentials');
