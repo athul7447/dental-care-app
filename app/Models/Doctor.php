@@ -28,4 +28,19 @@ class Doctor extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function isActive()
+    {
+        return $this->is_active;
+    }
+
+    public function isVerified()
+    {
+        return $this->is_verified;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
+    }
 }

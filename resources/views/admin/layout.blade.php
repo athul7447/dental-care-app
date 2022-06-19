@@ -53,6 +53,7 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{asset('admin_assets/js/config.js')}}"></script>
+    @stack('css')
   </head>
 
   <body>
@@ -77,18 +78,18 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active">
+            <li class="menu-item {{ Route::is('admin.dashboard')? 'active' : '' }}">
               <a href="{{ route('admin.dashboard') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
             </li>
             <!-- Components -->
-            <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
-            <li class="menu-item">
-              <a href="icons-boxicons.html" class="menu-link">
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Portal Management</span></li>
+            <li class="menu-item {{ Route::is('admin.portal.doctors') || Route::is('admin.portal.doctors.*')? 'active' : '' }}">
+              <a href="{{ route('admin.portal.doctors') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-crown"></i>
-                <div data-i18n="Boxicons">Boxicons</div>
+                <div data-i18n="Boxicons">Doctors</div>
               </a>
             </li>
           </ul>
@@ -189,6 +190,7 @@
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="{{asset('admin_assets/vendor/libs/jquery/jquery.js')}}"></script>
+    @stack('scripts')
     <script src="{{asset('admin_assets/vendor/libs/popper/popper.js')}}"></script>
     <script src="{{asset('admin_assets/vendor/js/bootstrap.js')}}"></script>
     <script src="{{asset('admin_assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
@@ -196,8 +198,6 @@
     <script src="{{asset('admin_assets/vendor/js/menu.js')}}"></script>
     <!-- endbuild -->
 
-    <!-- Vendors JS -->
-    <script src="{{asset('admin_assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
 
     <!-- Main JS -->
     <script src="{{asset('admin_assets/js/main.js')}}"></script>

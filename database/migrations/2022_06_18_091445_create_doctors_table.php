@@ -22,6 +22,7 @@ class CreateDoctorsTable extends Migration
             $table->string('phone');
             $table->string('username');
             $table->string('password');
+            $table->string('image')->nullable();
             $table->boolean('is_active')->default(true);
             $table->boolean('is_verified')->default(false);
             $table->softDeletes();
