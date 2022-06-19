@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Doctor extends Authenticatable
 {
     use HasFactory,SoftDeletes;
-
+    protected $guard = 'doctor';
     protected $fillable = [
         'name',
         'email',
@@ -19,5 +19,13 @@ class Doctor extends Authenticatable
         'address',
         'qualification',
         'username',
+    ];
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
     ];
 }

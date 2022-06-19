@@ -25,12 +25,11 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
         $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-            return redirect()->intended('portal/dashboard')
-                        ->withSuccess('Signed in');
+        if (Auth::guard('portal')->attempt($credentials)) {
+            return redirect()->route('portal.dashboard');
         }
 
-        return redirect("login")->withSuccess('Login details are not valid');
+        return redirect()->route('portal.login')->with('error', 'Invalid credentials');
     }
 
     public function register()
@@ -43,13 +42,17 @@ class LoginController extends Controller
         try{
             $result=$this->doctorRepository->register($request);
             if($result){
-                $arr = array('msg' => 'Contact Added Successfully!', 'status' => true);
-                return Response()->json($arr);
+                return redirect()->route('portal.login')->with('success','Registration Successful');
             }
         }catch(\Exception $e){
-            $arr = array('msg' => 'Something went wrong. Please try again!', 'status' => false);
-            return Response()->json($arr);
+            return redirect()->route('portal.login')->with('error','Registration Failed');
         }
 
+    }
+
+    public function logout()
+    {
+        Auth::guard('portal')->logout();
+        return redirect()->route('portal.login');
     }
 }
