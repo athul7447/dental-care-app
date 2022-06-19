@@ -2,8 +2,13 @@
 @section('content')
 @push('css')
     <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.9/sweetalert2.min.css" integrity="sha512-cyIcYOviYhF0bHIhzXWJQ/7xnaBuIIOecYoPZBgJHQKFPo+TOBA+BY1EnTpmM8yKDU4ZdI3UGccNGCEUdfbBqw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+       .verify .form-check-input:checked, .form-check-input[type=checkbox]:indeterminate {
+    background-color: #047a35 !important;
+    border-color: #047a35!important;
+}
+        </style>
 @endpush
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Doctors </span></h4>
@@ -60,13 +65,13 @@
                             <td>{{ $doctor->address }}</td>
                             <td>{{ $doctor->phone }}</td>
                             <td>
-                                <div class="form-check form-switch">
+                                <div class="form-check form-switch verify">
                                     <input class="form-check-input float-center verify" data-action="{{ route('admin.portal.doctors.verify',$doctor->id) }}" type="checkbox" role="switch"
                                     {{ $doctor->isVerified()?'checked':'' }}>
                                 </div>
                             </td>
                             <td>
-                                <div class="form-check form-switch">
+                                <div class="form-check form-switch ">
                                     <input class="form-check-input float-center status" data-action="{{ route('admin.portal.doctors.status',$doctor->id) }}" type="checkbox" role="switch"
                                     {{ $doctor->isActive()?'checked':'' }}>
                                 </div>
