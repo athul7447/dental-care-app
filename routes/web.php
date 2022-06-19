@@ -32,6 +32,16 @@ Route::prefix('admin')->group(function () {
         Route::get('/dashboard',[\App\Http\Controllers\Admin\AdminController::class,'dashboard'])->name('dashboard');
         Route::get('/profile',[\App\Http\Controllers\Admin\AdminController::class,'profile'])->name('profile');
         Route::post('/profile/update',[\App\Http\Controllers\Admin\AdminController::class,'updateProfile'])->name('profile.update');
+
+        //portal maanagement
+        Route::get('/doctors',[\App\Http\Controllers\Admin\AdminController::class,'getAllDoctors'])->name('portal.doctors');
+        Route::get('/doctors/create',[\App\Http\Controllers\Admin\AdminController::class,'createDoctor'])->name('portal.doctors.create');
+        Route::post('/doctors/create',[\App\Http\Controllers\Admin\AdminController::class,'storeDoctor'])->name('portal.doctors.store');
+        Route::get('/doctors/{id}/edit',[\App\Http\Controllers\Admin\AdminController::class,'editDoctor'])->name('portal.doctors.edit');
+        Route::post('/doctors/{id}/edit',[\App\Http\Controllers\Admin\AdminController::class,'updateDoctor'])->name('portal.doctors.update');
+        Route::get('/doctors/{id}/delete',[\App\Http\Controllers\Admin\AdminController::class,'deleteDoctor'])->name('portal.doctors.delete');
+        Route::get('doctors/{id}/verify',[\App\Http\Controllers\Admin\AdminController::class,'verifyDoctor'])->name('portal.doctors.verify');
+        Route::get('doctors/{id}/status',[\App\Http\Controllers\Admin\AdminController::class,'changeDoctorStatus'])->name('portal.doctors.status');
     });
 });
 

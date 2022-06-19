@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminProfileRequest;
+use App\Http\Requests\DoctorRegisterRequest;
+use App\Http\Requests\DoctorUpdateRequest;
 use Illuminate\Http\Request;
 use App\Repositories\Admin\AdminRepository;
 use Illuminate\Http\JsonResponse;
@@ -80,4 +82,78 @@ class AdminController extends Controller
             return redirect()->back()->with('message', $e->getMessage());
         }
     }
+
+    public function getAlldoctors()
+    {
+        try {
+            $doctors = $this->adminRepository->getAllDoctors();
+            return view('admin.portal.doctors-list',compact('doctors'));
+        }catch (\Exception $e) {
+            return redirect()->back()->with('message', $e->getMessage());
+        }
+    }
+    public function createDoctor()
+    {
+        return view('admin.portal.create-doctor');
+    }
+    public function storeDoctor(DoctorRegisterRequest $request)
+    {
+        try {
+            $this->adminRepository->storeDoctor($request);
+            return redirect()->route('admin.portal.doctors')->with('message', 'Doctor created successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors')->with('message', $e->getMessage());
+        }
+    }
+
+    public function editDoctor($id)
+    {
+        try {
+            $doctor = $this->adminRepository->getDoctor($id);
+            return view('admin.portal.edit-doctor',compact('doctor'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('message', $e->getMessage());
+        }
+    }
+
+    public function updateDoctor(DoctorUpdateRequest $request,$id)
+    {
+        try {
+            $this->adminRepository->updateDoctor($request,$id);
+            return redirect()->route('admin.portal.doctors')->with('message', 'Doctor updated successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors')->with('error', $e->getMessage());
+        }
+    }
+
+    public function deleteDoctor($id)
+    {
+        try {
+            $this->adminRepository->deleteDoctor($id);
+            return redirect()->route('admin.portal.doctors')->with('message', 'Doctor deleted successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors')->with('error', $e->getMessage());
+        }
+    }
+
+    public function verifyDoctor($id)
+    {
+        try {
+            $this->adminRepository->verifyDoctor($id);
+            return redirect()->route('admin.portal.doctors')->with('message', 'Doctor verified successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors')->with('error', $e->getMessage());
+        }
+    }
+
+    public function changeDoctorStatus($id)
+    {
+        try {
+            $this->adminRepository->changeDoctorStatus($id);
+            return redirect()->route('admin.portal.doctors')->with('message', 'Doctor status changed successfully');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors')->with('error', $e->getMessage());
+        }
+    }
+
 }
