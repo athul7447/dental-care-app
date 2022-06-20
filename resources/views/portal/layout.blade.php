@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>General Dashboard &mdash; Stisla</title>
+  <title>Dente | Portal</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{ asset('doctor_assets/modules/bootstrap/css/bootstrap.min.css')}}">
@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="{{ asset('doctor_assets/css/components.css')}}">
 <!-- Start GA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+@stack('css')
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -162,9 +163,9 @@
           </li> --}}
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
             <img alt="image" src="{{ asset('doctor_assets/img/avatar/avatar-1.png')}}" class="rounded-circle mr-1">
-            <div class="d-sm-none d-lg-inline-block">Dr.John Doe</div></a>
+            <div class="d-sm-none d-lg-inline-block">{{ Auth::user()->name }}</div></a>
             <div class="dropdown-menu dropdown-menu-right">
-              <a href="features-profile.html" class="dropdown-item has-icon">
+              <a href="{{ route('portal.profile') }}" class="dropdown-item has-icon">
                 <i class="far fa-user"></i> Profile
               </a>
               <div class="dropdown-divider"></div>
@@ -193,6 +194,10 @@
             <li class="active">
                 <a class="nav-link" href="{{route('portal.dashboard')}}"><i class="fas fa-fire"></i> <span>Dashboard</span></a>
             </li>
+
+            <li class="active">
+                <a class="nav-link" href="{{route('portal.appointments')}}"><i class="fas fa-fire"></i> <span>Appointments</span></a>
+            </li>
           </ul>
          </aside>
       </div>
@@ -213,7 +218,6 @@
   <!-- General JS Scripts -->
   <script src="{{ asset('doctor_assets/modules/jquery.min.js')}}"></script>
   <script src="{{ asset('doctor_assets/modules/popper.js')}}"></script>
-  <script src="{{ asset('doctor_assets/modules/tooltip.js')}}"></script>
   <script src="{{ asset('doctor_assets/modules/bootstrap/js/bootstrap.min.js')}}"></script>
   <script src="{{ asset('doctor_assets/modules/nicescroll/jquery.nicescroll.min.js')}}"></script>
   <script src="{{ asset('doctor_assets/modules/moment.min.js')}}"></script>
@@ -221,7 +225,6 @@
 
   <!-- JS Libraies -->
 
-  <script src="{{ asset('doctor_assets/modules/chart.min.js')}}"></script>
 
 
   <!-- Page Specific JS File -->
@@ -230,5 +233,7 @@
   <!-- Template JS File -->
   <script src="{{ asset('doctor_assets/js/scripts.js')}}"></script>
   <script src="{{ asset('doctor_assets/js/custom.js')}}"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  @stack('scripts')
 </body>
 </html>
