@@ -52,4 +52,7 @@ Route::prefix('portal')->name('portal.')->group(function () {
     Route::post('/register/submit',[\App\Http\Controllers\Portal\LoginController::class,'registerSubmit'])->name('register.submit');
     Route::post('/logout',[\App\Http\Controllers\Portal\LoginController::class,'logout'])->name('logout');
     Route::get('/dashboard',[\App\Http\Controllers\Doctor\DoctorContoller::class,'dashboard'])->name('dashboard');
+    Route::get('/profile',[\App\Http\Controllers\Doctor\DoctorContoller::class,'myProfile'])->name('profile');
+    Route::post('/profile/update',[\App\Http\Controllers\Doctor\DoctorContoller::class,'updateProfile'])->name('profile.update');
+    Route::get('/appointments',[\App\Http\Controllers\Doctor\DoctorContoller::class,'appointments'])->name('appointments');
 });
