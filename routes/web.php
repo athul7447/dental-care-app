@@ -22,7 +22,8 @@ Route::get('/',[\App\Http\Controllers\Customer\CustomerController::class,'index'
 Route::get('/about-us.html',[\App\Http\Controllers\Customer\CustomerController::class,'about'])->name('customer.about');
 Route::get('/news.html',[\App\Http\Controllers\Customer\CustomerController::class,'news'])->name('customer.news');
 Route::get('/services.html',[\App\Http\Controllers\Customer\CustomerController::class,'services'])->name('customer.services');
-Route::get('/contact.html',[\App\Http\Controllers\Customer\CustomerController::class,'contact'])->name('customer.contact');
+Route::get('/appointment.html',[\App\Http\Controllers\Customer\CustomerController::class,'appointment'])->name('customer.appointment');
+Route::post('/submit-appointment.html',[\App\Http\Controllers\Customer\CustomerController::class,'submitAppointment'])->name('customer.submit-appointment');
 
 Route::prefix('admin')->group(function () {
     Route::get('', [\App\Http\Controllers\Auth\LoginController::class,'showLoginForm'])->name('login');
