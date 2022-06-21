@@ -13,6 +13,7 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{ asset('doctor_assets/css/style.css')}}">
   <link rel="stylesheet" href="{{ asset('doctor_assets/css/components.css')}}">
+  <link rel="icon" type="image/x-icon" href="{{asset('admin_assets/img/favicon/fav_icon.png')}}" />
 <!-- Start GA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
 @stack('css')
@@ -194,9 +195,11 @@
             <li class="active">
                 <a class="nav-link" href="{{route('portal.dashboard')}}"><i class="fas fa-fire"></i> <span>Dashboard</span></a>
             </li>
-
             <li class="active">
                 <a class="nav-link" href="{{route('portal.appointments')}}"><i class="fas fa-fire"></i> <span>Appointments</span></a>
+            </li>
+            <li class="active">
+                <a class="nav-link" href="{{route('portal.appointments.calendar')}}"><i class="fas fa-fire"></i> <span>Appointments Calendar</span></a>
             </li>
           </ul>
          </aside>

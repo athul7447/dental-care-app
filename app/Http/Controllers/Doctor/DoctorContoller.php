@@ -49,9 +49,15 @@ class DoctorContoller extends Controller
         }
     }
 
-    public function appointments()
+    public function appointmentsCalendar()
     {
         return view('portal.booking');
+    }
+
+    public function appointments()
+    {
+        $appointments=$this->doctorRepository->getMyAppointments(Auth::id());
+        return view('portal.appointments',compact('appointments'));
     }
 
 }
