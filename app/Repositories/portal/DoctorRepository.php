@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories\portal;
 
+use App\Models\Appointment;
 use App\Models\Doctor;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -44,5 +45,11 @@ class DoctorRepository
         }
         $doctor->save();
         return true;
+    }
+
+    public function getMyAppointments($id)
+    {
+        $appointment=Appointment::where('doctor_id',$id)->get();
+        return $appointment;
     }
 }
