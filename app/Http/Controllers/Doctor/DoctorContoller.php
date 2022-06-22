@@ -51,7 +51,8 @@ class DoctorContoller extends Controller
 
     public function appointmentsCalendar()
     {
-        return view('portal.booking');
+        $appointments=$this->doctorRepository->getAppointments(Auth::guard('portal')->user()->id);
+        return view('portal.booking',compact('appointments'));
     }
 
     public function appointments()

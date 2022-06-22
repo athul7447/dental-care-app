@@ -43,7 +43,7 @@ class CustomerController extends Controller
             $appointment->name=$request->name;
             $appointment->email=$request->email;
             $appointment->phone=$request->phone;
-            $appointment->date=$request->date;
+            $appointment->date=date('Y-m-d',strtotime($request->date));
             $appointment->time=$request->time;
             $appointment->doctor_id=$request->doctor_name;
             $appointment->note=$request->note;
