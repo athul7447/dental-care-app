@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AdminProfileRequest;
+use App\Http\Requests\AppointmentRequest;
 use App\Http\Requests\DoctorRegisterRequest;
 use App\Http\Requests\DoctorUpdateRequest;
 use Illuminate\Http\Request;
@@ -153,6 +154,78 @@ class AdminController extends Controller
             return redirect()->route('admin.portal.doctors')->with('message', 'Doctor status changed successfully');
         } catch (\Exception $e) {
             return redirect()->route('admin.portal.doctors')->with('error', $e->getMessage());
+        }
+    }
+
+    public function getAppointments($id)
+    {
+        try {
+            $appointments = $this->adminRepository->getAppointments($id);
+            $doctorId = $id;
+            if($appointments->count() > 0){
+                return view('admin.portal.appointments-list',compact('appointments','doctorId'));
+            }else{
+                return redirect()->route('admin.portal.doctors')->with('message', 'No appointments found');
+            }
+        }catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors')->with('error','No appointments found');
+        }
+    }
+
+    public function approveAppointment($doctorId,$id)
+    {
+        try {
+           $result= $this->adminRepository->approveAppointment($doctorId,$id);
+            if($result){
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('message', 'Appointment approve status successfully');
+            }else{
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
+        }
+    }
+
+    public function deleteAppointment($doctorId,$id)
+    {
+        try {
+           $result= $this->adminRepository->deleteAppointment($doctorId,$id);
+            if($result){
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('message', 'Appointment deleted successfully');
+            }else{
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
+        }
+    }
+
+    public function editAppointment($doctorId,$id)
+    {
+        try {
+            $appointment = $this->adminRepository->getAppointment($doctorId,$id);
+            $doctors= $this->adminRepository->getDoctors();
+            if($appointment){
+                return view('admin.portal.edit-appointment',compact('appointment','doctorId','doctors'));
+            }else{
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'No appointments found');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'No appointments found');
+        }
+    }
+
+    public function updateAppointment(AppointmentRequest $request,$doctorId,$id)
+    {
+        try {
+            if($this->adminRepository->updateAppointment($request,$doctorId,$id))
+            {
+                return redirect()->route('admin.portal.doctors')->with('message', 'Appointment updated successfully');
+            }else{
+                return redirect()->route('admin.portal.doctors')->with('error', 'Something wrong happened!');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors')->with('error', 'Something wrong happened!');
         }
     }
 

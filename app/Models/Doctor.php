@@ -43,4 +43,9 @@ class Doctor extends Authenticatable
     {
         return $this->image;
     }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 }

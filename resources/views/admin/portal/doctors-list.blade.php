@@ -44,6 +44,7 @@
                     <th>Qualification</th>
                     <th>Address</th>
                     <th>Phone</th>
+                    <th>Appointments</th>
                     <th>Verified</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -64,6 +65,12 @@
                             <td>{{ $doctor->qualification }}</td>
                             <td>{{ $doctor->address }}</td>
                             <td>{{ $doctor->phone }}</td>
+                            <td class="text-center"><a href="{{ route('admin.portal.doctors.appointments',$doctor->id) }}">
+                                <button class="btn btn-warning btn-sm">
+                                    <i class="bx bx-calendar"></i>
+                                    {{ $doctor->appointments->count() }}
+                                </button>
+                            </td>
                             <td>
                                 <div class="form-check form-switch verify">
                                     <input class="form-check-input float-center verify" data-action="{{ route('admin.portal.doctors.verify',$doctor->id) }}" type="checkbox" role="switch"

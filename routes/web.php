@@ -43,6 +43,11 @@ Route::prefix('admin')->group(function () {
         Route::get('/doctors/{id}/delete',[\App\Http\Controllers\Admin\AdminController::class,'deleteDoctor'])->name('portal.doctors.delete');
         Route::get('doctors/{id}/verify',[\App\Http\Controllers\Admin\AdminController::class,'verifyDoctor'])->name('portal.doctors.verify');
         Route::get('doctors/{id}/status',[\App\Http\Controllers\Admin\AdminController::class,'changeDoctorStatus'])->name('portal.doctors.status');
+        Route::get('/doctors/{id}/appointments',[\App\Http\Controllers\Admin\AdminController::class,'getAppointments'])->name('portal.doctors.appointments');
+        Route::get('/doctors/{doctor_id}/appointments/{appointment_id}/approve',[\App\Http\Controllers\Admin\AdminController::class,'approveAppointment'])->name('portal.doctors.appointments.approve');
+        Route::get('/doctors/{doctor_id}/appointments/{appointment_id}/delete',[\App\Http\Controllers\Admin\AdminController::class,'deleteAppointment'])->name('portal.doctors.appointments.delete');
+        Route::get('/doctors/{doctor_id}/appointments/{appointment_id}/edit',[\App\Http\Controllers\Admin\AdminController::class,'editAppointment'])->name('portal.doctors.appointments.edit');
+        Route::post('/doctors/{doctor_id}/appointments/{appointment_id}/update',[\App\Http\Controllers\Admin\AdminController::class,'updateAppointment'])->name('portal.doctors.appointments.update');
     });
 });
 
