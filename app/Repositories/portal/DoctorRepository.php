@@ -64,4 +64,10 @@ class DoctorRepository
         return false;
     }
 
+    public function getAppointments($id)
+    {
+        $appointment=Appointment::where('doctor_id',$id)->get();
+        return $appointment;
+    }
+
 }
