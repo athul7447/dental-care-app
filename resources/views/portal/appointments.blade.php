@@ -1,6 +1,9 @@
 @extends('portal.layout')
 @push('css')
 <link rel="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.18/sweetalert2.css"
+integrity="sha512-p06JAs/zQhPp/dk821RoSDTtxZ71yaznVju7IHe85CPn9gKpQVzvOXwTkfqCyWRdwo+e6DOkEKOWPmn8VE9Ekg=="
+crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
     .dataTables_filter{
         text-align: end !important;
@@ -20,11 +23,8 @@
       </div>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col">
           <div class="card">
-            <div class="card-header">
-              <h4>Appointments</h4>
-            </div>
             <div class="card-body p-0">
               <div class="table-responsive">
                 <table class="table table-striped" id="sortable-table">
@@ -51,10 +51,14 @@
                       <td>{{$appointment->date.'/'.$appointment->time}}</td>
                       <td>{{$appointment->note}}</td>
                       <td>
-                        <label class="custom-switch mt-2">
-                            <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
-                            <span class="custom-switch-indicator"></span>
-                          </label></td>
+                        @if($appointment->status == 0)
+                        <a href="{{ route('portal.appointments.approve',$appointment->id) }}">
+                            <button class="btn btn-danger btn-sm" >Approve</button>
+                        </a>
+                        @else
+                        <button class="btn btn-success btn-sm" >Approved</button>
+                        @endif
+                        </td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -70,9 +74,25 @@
 @push('scripts')
 <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.18/sweetalert2.min.js"
+integrity="sha512-98hK38IvWQC069FFbq/la6NaBj4TGplZ118B+bFVOxsBQQL4EqKUWw9JkNh8Lem7FCGkLCxgr81q+/hRIemJCw=="
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function() {
         $('.table').DataTable();
+        @if(session('success'))
+            Swal.fire(
+                    'Success!',
+                    '{{ session("success") }}',
+                    'success'
+                    );
+        @elseif(session('error'))
+        Swal.fire(
+                'Error!',
+                '{{ session("error") }}',
+                'error'
+                );
+        @endif
     } );
     </script>
 @endpush

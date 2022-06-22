@@ -56,5 +56,6 @@ Route::prefix('portal')->name('portal.')->group(function () {
     Route::get('/profile',[\App\Http\Controllers\Doctor\DoctorContoller::class,'myProfile'])->name('profile');
     Route::post('/profile/update',[\App\Http\Controllers\Doctor\DoctorContoller::class,'updateProfile'])->name('profile.update');
     Route::get('/appointments',[\App\Http\Controllers\Doctor\DoctorContoller::class,'appointments'])->name('appointments');
+    Route::get('/appointments/{id}/approve',[\App\Http\Controllers\Doctor\DoctorContoller::class,'approveAppointment'])->name('appointments.approve');
     Route::get('/appointments-calendar',[\App\Http\Controllers\Doctor\DoctorContoller::class,'appointmentsCalendar'])->name('appointments.calendar');
 });
