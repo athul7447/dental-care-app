@@ -26,7 +26,7 @@ class AppointmentRequest extends FormRequest
         return [
             'name'=>'required|min:3|max:50|string',
             'email'=>'required|email|max:30|string',
-            'phone'=>'required|min:10|max:15|string',
+            'phone'=>'required|min:10|numeric',
             'date'=>'required|date|string',
             'time'=>'required|string',
             'doctor_name'=>'required|string',

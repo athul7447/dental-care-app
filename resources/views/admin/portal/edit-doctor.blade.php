@@ -88,7 +88,7 @@
                     </div>
                   </div>
                   <div class="mt-2">
-                    <button type="submit" class="btn btn-primary me-2">Create</button>
+                    <button type="submit" class="btn btn-primary me-2">Update</button>
                     <button type="reset" class="btn btn-outline-secondary">Reset</button>
                   </div>
                 </form>
