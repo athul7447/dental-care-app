@@ -52,4 +52,15 @@ class DoctorRepository
         $appointment=Appointment::where('doctor_id',$id)->get();
         return $appointment;
     }
+
+    public function approveAppointment($id,$doctor_id)
+    {
+        $appointment=Appointment::where('id',$id)->where('doctor_id',$doctor_id)->first();
+        if($appointment){
+            $appointment->status=1;
+            $appointment->save();
+            return true;
+        }
+        return false;
+    }
 }

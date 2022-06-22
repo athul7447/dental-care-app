@@ -196,10 +196,10 @@
                 <a class="nav-link" href="{{route('portal.dashboard')}}"><i class="fas fa-fire"></i> <span>Dashboard</span></a>
             </li>
             <li class="active">
-                <a class="nav-link" href="{{route('portal.appointments')}}"><i class="fas fa-fire"></i> <span>Appointments</span></a>
+                <a class="nav-link" href="{{route('portal.appointments')}}"><i class="fas fa-th"></i> <span>Appointments</span></a>
             </li>
             <li class="active">
-                <a class="nav-link" href="{{route('portal.appointments.calendar')}}"><i class="fas fa-fire"></i> <span>Appointments Calendar</span></a>
+                <a class="nav-link" href="{{route('portal.appointments.calendar')}}"><i class="fas fa-calendar"></i> <span>Appointments Calendar</span></a>
             </li>
           </ul>
          </aside>

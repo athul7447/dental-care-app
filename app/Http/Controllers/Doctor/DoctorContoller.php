@@ -60,4 +60,18 @@ class DoctorContoller extends Controller
         return view('portal.appointments',compact('appointments'));
     }
 
+    public  function approveAppointment($id)
+    {
+        try{
+            $result=$this->doctorRepository->approveAppointment($id,Auth::id());
+            if($result){
+                return redirect()->route('portal.appointments')->with('success','Appointment Approved Successfully');
+            }else{
+                return redirect()->route('portal.appointments')->with('error','Appointment Approval Failed');
+            }
+        }catch(\Exception $e){
+            return redirect()->route('portal.appointments')->with('error','Appointment Approval Failed');
+        }
+    }
+
 }
