@@ -85,6 +85,7 @@
                     time:'{{ $appointment->time }}',
                     note:'{{ $appointment->note }}',
                     status:'{{ $appointment->status }}',
+                    is_declined:'{{ $appointment->is_declined }}',
                     date:'{{ $appointment->date }}'
                 },
 
@@ -108,10 +109,14 @@
             $('#date').html(formattedDate);
             $('#time').html(time);
             $('#note').html(note);
-            if(status == 0){
-                $('#status').html('<span class="badge badge-warning">Pending</span>');
+            if(info.event.extendedProps.is_declined == 1){
+                $('#status').html('<span class="badge badge-danger">Declined</span>');
             }else{
-                $('#status').html('<span class="badge badge-success">Confirmed</span>');
+                if(status == 0){
+                        $('#status').html('<span class="badge badge-warning">Pending</span>');
+                }else{
+                    $('#status').html('<span class="badge badge-success">Approved</span>');
+                }
             }
             $('#calendarModal').modal();
         }
