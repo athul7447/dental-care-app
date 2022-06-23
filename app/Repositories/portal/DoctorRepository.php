@@ -70,4 +70,15 @@ class DoctorRepository
         return $appointment;
     }
 
+    public function declineAppointment($id,$doctor_id)
+    {
+        $appointment=Appointment::where('id',$id)->where('doctor_id',$doctor_id)->first();
+        if($appointment){
+            $appointment->is_declined=1;
+            $appointment->save();
+            return true;
+        }
+        return false;
+    }
+
 }
