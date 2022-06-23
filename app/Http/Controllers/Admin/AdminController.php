@@ -177,7 +177,7 @@ class AdminController extends Controller
         try {
            $result= $this->adminRepository->approveAppointment($doctorId,$id);
             if($result){
-                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('message', 'Appointment approve status successfully');
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('message', 'Appointment approve status changed successfully');
             }else{
                 return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
             }
@@ -226,6 +226,20 @@ class AdminController extends Controller
             }
         } catch (\Exception $e) {
             return redirect()->route('admin.portal.doctors')->with('error', 'Something wrong happened!');
+        }
+    }
+
+    public function declineAppointment($doctorId,$id)
+    {
+        try {
+            $result= $this->adminRepository->declineAppointment($doctorId,$id);
+            if($result){
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('message', 'Appointment decline status changed successfully ');
+            }else{
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
         }
     }
 

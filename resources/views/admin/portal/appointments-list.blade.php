@@ -50,7 +50,7 @@
                         <td>{{ $appointment->date."/".$appointment->time }}</td>
                         <td>{{ $appointment->note }}</td>
                         <td>
-                            @if($appointment->status == 0)
+                            {{-- @if($appointment->status == 0)
                             <a href="{{ route('admin.portal.doctors.appointments.approve',[$doctorId,$appointment->id]) }}">
                                 <button class="btn btn-danger btn-sm" >Approve</button>
                             </a>
@@ -58,6 +58,23 @@
                             <a href="{{ route('admin.portal.doctors.appointments.approve',[$doctorId,$appointment->id]) }}">
                                 <button class="btn btn-success btn-sm" >Approved</button>
                             </a>
+                            @endif --}}
+                            @if($appointment->is_declined == 1)
+                            <a href="{{ route('admin.portal.doctors.appointments.decline',[$doctorId,$appointment->id]) }}">
+                                <button class="btn btn-warning btn-sm">Decline</button>
+                            </a>
+                            @else
+                                @if($appointment->status == 0)
+                                    <a href="{{ route('admin.portal.doctors.appointments.approve',[$doctorId,$appointment->id]) }}">
+                                        <button class="btn btn-primary btn-sm" >Approve</button>
+                                    </a>
+                                    <a href="{{ route('admin.portal.doctors.appointments.decline',[$doctorId,$appointment->id]) }}">
+                                        <button class="btn btn-danger btn-sm">Decline</button>
+                                    </a>
+                                @else
+                                <a href="{{ route('admin.portal.doctors.appointments.approve',[$doctorId,$appointment->id]) }}">
+                                    <button class="btn btn-success btn-sm" >Approved</button>
+                                @endif
                             @endif
                         </td>
                         <td>
