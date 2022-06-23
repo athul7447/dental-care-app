@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Dente | {{ ucfirst(collect(request()->segments())->last() ) }}</title>
+  <title>Tooth Fairies | {{ ucfirst(collect(request()->segments())->last() ) }}</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{ asset('doctor_assets/modules/bootstrap/css/bootstrap.min.css')}}">

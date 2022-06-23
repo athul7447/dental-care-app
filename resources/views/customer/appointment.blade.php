@@ -18,14 +18,14 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
           <span class="sub-text">book your appointment now !</span>
           <h1><strong>Book</strong> Appointment</h1>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+</div>
+<a name="appointment-form"></a>
   <div class="site-section bg-light">
     <div class="container">
         <h2 class="site-heading text-black mb-5"><strong>Appointment</strong></h2>
         <div class="col">
-            <a name="appointment-form"></a>
           <form action="{{ route('customer.submit-appointment') }}" class="p-5 bg-white mb-5 mb-lg-0" method="post" id="appointment_form">
             @csrf
             <div class="row form-group">
