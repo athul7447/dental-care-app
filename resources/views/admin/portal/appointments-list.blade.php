@@ -59,7 +59,7 @@
                             @if($appointment->date >= date('Y-m-d'))
                                 @if($appointment->is_declined == 1)
                                 <a href="{{ route('admin.portal.doctors.appointments.decline',[$doctorId,$appointment->id]) }}">
-                                    <button class="btn btn-warning btn-sm">Decline</button>
+                                    <button class="btn btn-warning btn-sm">Declined</button>
                                 </a>
                                 @else
                                     @if($appointment->status == 0)

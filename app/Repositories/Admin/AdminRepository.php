@@ -167,4 +167,24 @@ class AdminRepository
     {
         return Appointment::where('doctor_id',$doctorId)->get();
     }
+
+    public function getAllAppointmentsCount()
+    {
+        return Appointment::count();
+    }
+
+    public function getAllDoctorsCount()
+    {
+        return Doctor::count();
+    }
+
+    public function getTodaysAppointmentCount()
+    {
+        return Appointment::whereDate('date',date('Y-m-d'))->count();
+    }
+
+    public function getTotalDeclinedAppointmentCount()
+    {
+        return Appointment::where('is_declined',1)->count();
+    }
 }
