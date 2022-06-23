@@ -229,4 +229,18 @@ class AdminController extends Controller
         }
     }
 
+    public function declineAppointment($doctorId,$id)
+    {
+        try {
+            $result= $this->adminRepository->declineAppointment($doctorId,$id);
+            if($result){
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('message', 'Appointment decline status changed successfully ');
+            }else{
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
+        }
+    }
+
 }

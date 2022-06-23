@@ -51,18 +51,21 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                       <td>{{$appointment->date.'/'.$appointment->time}}</td>
                       <td>{{$appointment->note}}</td>
                       <td>
-
-                        @if($appointment->is_declined == 1)
-                            <span class="badge badge-danger">Declined</span>
-                        @else
-                            @if($appointment->status == 0)
-                                <a href="{{ route('portal.appointments.approve',$appointment->id) }}">
-                                    <button class="btn btn-primary btn-sm" >Approve</button>
-                                </a>
-                                <a href="{{ route('portal.appointments.decline',$appointment->id) }}"><button class="btn btn-danger btn-sm">Decline</button></a>
+                        @if($appointment->date >= date('Y-m-d'))
+                            @if($appointment->is_declined == 1)
+                                <span class="badge badge-danger">Declined</span>
                             @else
-                                <span class="badge badge-success" >Approved</span>
+                                @if($appointment->status == 0)
+                                    <a href="{{ route('portal.appointments.approve',$appointment->id) }}">
+                                        <button class="btn btn-primary btn-sm" >Approve</button>
+                                    </a>
+                                    <a href="{{ route('portal.appointments.decline',$appointment->id) }}"><button class="btn btn-danger btn-sm">Decline</button></a>
+                                @else
+                                    <span class="badge badge-success" >Approved</span>
+                                @endif
                             @endif
+                        @else
+                            <span class="badge badge-danger">Expired</span>
                         @endif
 
                         </td>

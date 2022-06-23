@@ -48,6 +48,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/doctors/{doctor_id}/appointments/{appointment_id}/delete',[\App\Http\Controllers\Admin\AdminController::class,'deleteAppointment'])->name('portal.doctors.appointments.delete');
         Route::get('/doctors/{doctor_id}/appointments/{appointment_id}/edit',[\App\Http\Controllers\Admin\AdminController::class,'editAppointment'])->name('portal.doctors.appointments.edit');
         Route::post('/doctors/{doctor_id}/appointments/{appointment_id}/update',[\App\Http\Controllers\Admin\AdminController::class,'updateAppointment'])->name('portal.doctors.appointments.update');
+        Route::get('/doctors/{doctor_id}/appointments/{appointment_id}/decline',[\App\Http\Controllers\Admin\AdminController::class,'declineAppointment'])->name('portal.doctors.appointments.decline');
     });
 });
 
