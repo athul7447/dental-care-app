@@ -9,8 +9,8 @@
               <!-- Logo -->
               <div class="app-brand justify-content-center">
                 <a href="{{ route('login') }}" class="app-brand-link gap-2">
-                    <img src="{{asset('admin_assets/img/favicon/fav_icon.png')}}" alt="logo" style="height: 35px;">
-                  <span class=" demo text-body fw-bolder" style="font-size: 35px;">Dente Admin</span>
+                    <img src="{{asset('admin_assets/img/favicon/fav_icon.png')}}" alt="logo" style="height: 30px;">
+                  <span class=" demo text-body fw-bolder" style="font-size: 30px;">Tooth Fairies Admin</span>
                 </a>
               </div>
               <form id="formAuthentication" class="mb-3" action="{{ route('login.submit') }}" method="POST">

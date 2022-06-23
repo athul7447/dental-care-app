@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Dente</title>
+    <title>Tooth Fairies</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,700,900">
@@ -59,8 +59,8 @@
       <div class="site-navbar">
         <div class="container py-1">
           <div class="row align-items-center">
-            <div class="col-2">
-              <h2 class="mb-0 site-logo"><a href="index.html">Dente</a></h2>
+            <div class="col-4">
+              <h2 class="mb-0 site-logo"><a href="index.html">Tooth Fairies</a></h2>
             </div>
             <div class="col-10">
               <nav class="site-navigation text-right" role="navigation">

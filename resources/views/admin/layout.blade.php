@@ -14,7 +14,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Dente | Admin</title>
+    <title>Tooth Fairies | Admin</title>
 
     <meta name="description" content="" />
 
@@ -66,7 +66,7 @@
           <div class="app-brand demo">
             <img src="{{asset('admin_assets/img/favicon/fav_icon.png')}}" alt="logo" style="height: 50px;">
             <a href="{{ route('admin.dashboard') }}" class="app-brand-link">
-              <span class="demo menu-text fw-bolder ms-2">DENTE ADMIN</span>
+              <span class="demo menu-text fw-bolder ms-2">Tooth Fairies ADMIN</span>
             </a>
 
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">

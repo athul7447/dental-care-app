@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>Dente | Portal</title>
+  <title>Tooth Fairies | Portal</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{ asset('doctor_assets/modules/bootstrap/css/bootstrap.min.css')}}">
@@ -60,7 +60,7 @@
       <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            <a href="{{route('portal.dashboard')}}"> <img src="{{asset('admin_assets/img/favicon/fav_icon.png')}}" alt="logo" style="height: 30px;">  Dente Portal</a>
+            <a href="{{route('portal.dashboard')}}"> <img src="{{asset('admin_assets/img/favicon/fav_icon.png')}}" alt="logo" style="height: 30px;">  Tooth Fairies Portal</a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">
             <a href="{{route('portal.dashboard')}}"> <img src="{{asset('admin_assets/img/favicon/fav_icon.png')}}" alt="logo" style="height: 30px;"></a>
