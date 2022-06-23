@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+
+    private $adminRepository;
     public function __construct(AdminRepository $adminRepository)
     {
         $this->adminRepository = $adminRepository;
@@ -240,6 +242,21 @@ class AdminController extends Controller
             }
         } catch (\Exception $e) {
             return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
+        }
+    }
+
+    public function appointmentCalendar($doctorId)
+    {
+        try {
+            $appointments = $this->adminRepository->getDoctorAppointments($doctorId);
+            $doctorId = $doctorId;
+            if($appointments->count() > 0){
+                return view('admin.portal.appointment-calendar',compact('appointments','doctorId'));
+            }else{
+                return redirect()->route('admin.portal.doctors')->with('error', 'No appointments found');
+            }
+        }catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors')->with('error','No appointments found');
         }
     }
 

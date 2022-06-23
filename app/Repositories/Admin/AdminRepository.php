@@ -162,4 +162,9 @@ class AdminRepository
         }
         return false;
     }
+
+    public function getDoctorAppointments($doctorId)
+    {
+        return Appointment::where('doctor_id',$doctorId)->get();
+    }
 }
