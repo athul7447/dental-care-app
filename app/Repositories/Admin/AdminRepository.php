@@ -151,4 +151,15 @@ class AdminRepository
         }
         return false;
     }
+
+    public function declineAppointment($doctorId,$id)
+    {
+        $appointment = Appointment::where('doctor_id',$doctorId)->where('id',$id)->first();
+        if($appointment){
+            $appointment->is_declined = !$appointment->is_declined;
+            $appointment->save();
+            return true;
+        }
+        return false;
+    }
 }
