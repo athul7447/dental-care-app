@@ -75,4 +75,18 @@ class DoctorContoller extends Controller
         }
     }
 
+    public function declineAppointment($id)
+    {
+        try{
+            $result=$this->doctorRepository->declineAppointment($id,Auth::id());
+            if($result){
+                return redirect()->route('portal.appointments')->with('success','Appointment Declined Successfully');
+            }else{
+                return redirect()->route('portal.appointments')->with('error','Appointment Decline Failed');
+            }
+        }catch(\Exception $e){
+            return redirect()->route('portal.appointments')->with('error','Appointment Decline Failed');
+        }
+    }
+
 }

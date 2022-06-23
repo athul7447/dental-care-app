@@ -23,6 +23,7 @@ class CreateAppointmentsTable extends Migration
             $table->string('doctor_id');
             $table->text('note');
             $table->boolean('status')->default(false);
+            $table->boolean('is_declined')->default(false);
             $table->timestamps();
         });
     }
