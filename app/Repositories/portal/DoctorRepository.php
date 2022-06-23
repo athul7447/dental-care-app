@@ -81,4 +81,27 @@ class DoctorRepository
         return false;
     }
 
+    public function getTodaysAppointmentCount($id)
+    {
+        $appointment=Appointment::where('doctor_id',$id)->where('date',date('Y-m-d'))->count();
+        return $appointment;
+    }
+
+    public function getAllAppointmentsCount($id)
+    {
+        $appointment=Appointment::where('doctor_id',$id)->count();
+        return $appointment;
+    }
+
+    public function getApprovedAppointmentsCount($id)
+    {
+        $appointment=Appointment::where('doctor_id',$id)->where('status',1)->count();
+        return $appointment;
+    }
+
+    public function getDeclinedAppointmentsCount($id)
+    {
+        $appointment=Appointment::where('doctor_id',$id)->where('is_declined',1)->count();
+        return $appointment;
+    }
 }

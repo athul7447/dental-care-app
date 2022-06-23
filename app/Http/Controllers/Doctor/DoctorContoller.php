@@ -19,7 +19,16 @@ class DoctorContoller extends Controller
 
     public function dashboard()
     {
-        return view('portal.dashboard');
+        $todaysAppointmentCount = $this->doctorRepository->getTodaysAppointmentCount(Auth::id());
+        $allAppointmentsCount = $this->doctorRepository->getAllAppointmentsCount(Auth::id());
+        $approvedAppointmentsCount = $this->doctorRepository->getApprovedAppointmentsCount(Auth::id());
+        $declinedAppointmentsCount = $this->doctorRepository->getDeclinedAppointmentsCount(Auth::id());
+        return view('portal.dashboard',compact(
+            'todaysAppointmentCount',
+            'allAppointmentsCount',
+            'approvedAppointmentsCount',
+            'declinedAppointmentsCount'
+        ));
     }
 
     public function myProfile()

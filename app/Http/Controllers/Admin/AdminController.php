@@ -24,7 +24,16 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $allAppointmentsCount = $this->adminRepository->getAllAppointmentsCount();
+        $allDoctorsCount = $this->adminRepository->getAllDoctorsCount();
+        $todaysAppointmentCount = $this->adminRepository->getTodaysAppointmentCount();
+        $totalDeclinedAppointmentCount = $this->adminRepository->getTotalDeclinedAppointmentCount();
+        return view('admin.dashboard',compact(
+            'allAppointmentsCount',
+            'allDoctorsCount',
+            'todaysAppointmentCount',
+            'totalDeclinedAppointmentCount'
+        ));
     }
 
     public function profile()
