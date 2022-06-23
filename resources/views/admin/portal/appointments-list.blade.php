@@ -13,7 +13,13 @@
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Doctors /</span>   Appointments </h4>
     <div class="row">
         <div class="card">
+
             <div class="table-head p-3">
+                <div class="col-md-2">
+                    <a href="{{ route('admin.portal.doctors.calendar',$doctorId) }}">
+                    <button type="button" class="btn rounded-pill btn-warning">View Calendar</button>
+                    </a>
+                </div>
                 @if (session('message'))
                 <div class="alert alert-success alert-dismissible" role="alert">
                     {{ session('message') }}
@@ -88,6 +94,7 @@
           </div>
     </div>
 </div>
+
 @push('scripts')
     <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script>
