@@ -99,4 +99,33 @@ class DoctorContoller extends Controller
         }
     }
 
+    public function rescheduleAppointment($id)
+    {
+        $appointment=$this->doctorRepository->getAppointment($id,Auth::id());
+        $doctors=$this->doctorRepository->getDoctors();
+        if($appointment){
+            return view('portal.reshedule-appointment',compact('appointment','doctors'));
+        }else{
+            return redirect()->route('portal.appointments')->with('error','Appointment Not Found');
+        }
+    }
+
+    public function updateRescheduleAppointment(Request $request,$id)
+    {
+        $request->validate([
+            'date' => 'bail|required|date',
+            'time' => 'bail|required',
+        ]);
+        try{
+            $result=$this->doctorRepository->updateAppointment($request,$id,Auth::user());
+            if($result){
+                return redirect()->route('portal.appointments')->with('success','Appointment Reshedule Successfully');
+            }else{
+                return redirect()->route('portal.appointments.reshedule',$id)->with('error','Your appointment limit is reached');
+            }
+        }catch(\Exception $e){
+            return redirect()->route('portal.appointments.reshedule',$id)->with('error','Appointment Reshedule Failed');
+        }
+    }
+
 }

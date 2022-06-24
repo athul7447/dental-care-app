@@ -70,7 +70,7 @@
             <li class="{{ Route::is('portal.dashboard')? 'active' : '' }}">
                 <a class="nav-link" href="{{route('portal.dashboard')}}"><i class="fas fa-fire"></i> <span>Dashboard</span></a>
             </li>
-            <li class="{{ Route::is('portal.appointments')? 'active' : '' }}">
+            <li class="{{ Route::is('portal.appointments')|| Route::is('portal.appointments.*')? 'active' : '' }}">
                 <a class="nav-link" href="{{route('portal.appointments')}}"><i class="fas fa-th"></i> <span>Appointments</span></a>
             </li>
             <li class="{{ Route::is('portal.appointments.calendar')? 'active' : '' }}">
