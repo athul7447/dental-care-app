@@ -19,6 +19,7 @@ class Doctor extends Authenticatable
         'address',
         'qualification',
         'username',
+        'appointment_per_day',
     ];
     /**
      * The attributes that should be hidden for arrays.

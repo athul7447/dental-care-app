@@ -68,6 +68,7 @@ class AdminRepository
         $doctor->phone = $request->phone;
         $doctor->address = $request->address;
         $doctor->qualification = $request->qualification;
+        $doctor->appointment_per_day = $request->appointment_per_day;
         $doctor->username = $request->username;
         if($request->password){
             $doctor->password = Hash::make($request->password);
@@ -137,6 +138,13 @@ class AdminRepository
 
     public function updateAppointment($request,$doctorId,$id)
     {
+        $doctor=Doctor::findorfail($doctorId);
+        $appointmentPerDay=$doctor->appointment_per_day;
+        $date=date('Y-m-d',strtotime($request->date));
+        $doctorAppointment=Appointment::where('doctor_id',$doctorId)->where('date',$date)->count();
+        if($doctorAppointment > $appointmentPerDay){
+            return false;
+        }
         $appointment = Appointment::where('doctor_id',$doctorId)->where('id',$id)->first();
         if($appointment){
             $appointment->name = $request->name;

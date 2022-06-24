@@ -39,6 +39,7 @@ class DoctorRepository
         $doctor->email = $request->email;
         $doctor->qualification = $request->qualification;
         $doctor->phone = $request->phone;
+        $doctor->appointment_per_day = $request->appointment_per_day;
         $doctor->address = $request->address;
         if($request->password){
             $doctor->password = Hash::make($request->password);

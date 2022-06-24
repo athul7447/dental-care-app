@@ -31,6 +31,7 @@ class DoctorUpdateRequest extends FormRequest
             'qualification' => 'bail|required|max:255|string',
             'phone' => 'bail|required|max:255|string',
             'address' => 'bail|required|max:500|string',
+            'appointment_per_day' => 'bail|required|max:50|numeric',
         ];
     }
 
