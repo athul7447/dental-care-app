@@ -7,7 +7,14 @@
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Doctors /Appointments/</span> Edit </h4>
     <div class="row">
         <div class="col-md-12">
+              @if (session('error'))
+              <div class="alert alert-danger alert-dismissible" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="card mb-4">
+
                 <!-- Account -->
             <form  method="POST" action="{{ route('admin.portal.doctors.appointments.update',[request()->route('doctor_id'),request()->route('appointment_id')]) }}"  enctype="multipart/form-data">
                 @csrf
@@ -85,7 +92,12 @@
 </script>
 <script>
     $(document).ready(function(){
-        $('#time').timepicker();
+        $('#time').timepicker({
+            interval: 30,
+            minTime: '09:00',
+            maxTime: '18:00',
+            startTime: '09:00',
+        });
     });
 
     </script>

@@ -233,7 +233,7 @@ class AdminController extends Controller
             {
                 return redirect()->route('admin.portal.doctors')->with('message', 'Appointment updated successfully');
             }else{
-                return redirect()->route('admin.portal.doctors')->with('error', 'Something wrong happened!');
+                return redirect()->route('admin.portal.doctors.appointments.edit',[$doctorId,$id])->with('error', "Doctor's per day appointment limit is reached");
             }
         } catch (\Exception $e) {
             return redirect()->route('admin.portal.doctors')->with('error', 'Something wrong happened!');

@@ -39,6 +39,13 @@ class CustomerController extends Controller
     public function submitAppointment(AppointmentRequest $request)
     {
         try{
+            $doctorId = $request->doctor_name;
+            $doctor = Doctor::findOrFail($doctorId);
+            $date=date('Y-m-d',strtotime($request->date));
+            $doctorAppointment=Appointment::where('doctor_id',$doctorId)->where('date',$date)->count();
+            if($doctorAppointment > $doctor->appointment_per_day){
+                return redirect()->route('customer.appointment')->with('error','Appointment limit reached for this doctor');
+            }
             $appointment=new Appointment();
             $appointment->name=$request->name;
             $appointment->email=$request->email;
@@ -50,7 +57,7 @@ class CustomerController extends Controller
             $appointment->save();
             return redirect()->route('customer.appointment')->with('success','Appointment has been submitted successfully');
         }catch(\Exception $e){
-            return redirect()->route('customer.appointment')->with('error','Something went wrong. Please try again later');
+            return redirect()->route('customer.appointment')->with('error',$e->getMessage());
         }
 
     }

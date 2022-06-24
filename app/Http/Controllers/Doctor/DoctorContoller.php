@@ -46,6 +46,7 @@ class DoctorContoller extends Controller
             'qualification' => 'bail|required|max:255|string',
             'phone' => 'bail|required|max:255|string',
             'address' => 'bail|required|max:500|string',
+            'appointment_per_day' => 'bail|required|max:50|numeric',
             'password' => 'bail|nullable|min:6|confirmed',
         ]);
         try{

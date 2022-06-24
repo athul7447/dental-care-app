@@ -106,12 +106,24 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
 </script>
 <script>
     $(document).ready(function(){
-    $('#time').timepicker();
+    $('#time').timepicker({
+        interval: 30,
+        minTime: '09:00',
+        maxTime: '18:00',
+        startTime: '09:00',
+    });
     @if(session('success'))
     Swal.fire(
             'Success!',
             'Appointment has been submitted successfully',
             'success'
+            );
+    @endif
+    @if(session('error'))
+    Swal.fire(
+            'Error!',
+            '{{ session("error") }}',
+            'error'
             );
     @endif
 

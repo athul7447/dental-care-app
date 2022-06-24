@@ -76,6 +76,13 @@
                         @enderror
                     </div>
                     <div class="mb-3 col-md-6">
+                        <label for="appointment_per_day" class="form-label">Appointments per day</label>
+                        <input type="number" class="form-control" id="appointment_per_day" name="appointment_per_day" value="{{ $doctor->appointment_per_day }}" placeholder="Count of appointments per day">
+                        @error('appointment_per_day')
+                              <div class="text-danger">{{ $message }}</div>
+                          @enderror
+                      </div>
+                    <div class="mb-3 col-md-6">
                       <label for="password" class="form-label">Password</label>
                       <input class="form-control" type="password" id="password" name="password" placeholder="********">
                         @error('password')
