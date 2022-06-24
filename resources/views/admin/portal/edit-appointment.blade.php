@@ -58,7 +58,7 @@
                         @enderror
                     </div>
                     <div class="mb-3 col-md-6">
-                      <label for="address" class="form-label">Address</label>
+                      <label for="address" class="form-label">Doctor Name</label>
                       <select name="doctor_name" id="doctor_name" class="form-control">
                         <option value="">select</option>
                         @foreach ($doctors as $doctor)

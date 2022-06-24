@@ -105,4 +105,34 @@ class DoctorRepository
         $appointment=Appointment::where('doctor_id',$id)->where('is_declined',1)->count();
         return $appointment;
     }
+
+    public function getAppointment($id,$doctorId)
+    {
+        $appointment=Appointment::where('id',$id)->where('doctor_id',$doctorId)->first();
+        return $appointment;
+    }
+
+    public function getDoctors()
+    {
+        $doctors=Doctor::where('is_active',1)->where('is_verified',1)->get();
+        return $doctors;
+    }
+
+    public function updateAppointment($request,$id,$doctor)
+    {
+        $date=date('Y-m-d',strtotime($request->date));
+        $doctorAppointment=Appointment::where('doctor_id',$doctor->id)->where('date',$date)->count();
+        if($doctorAppointment > $doctor->appointment_per_day){
+            return false;
+        }
+        $appointment=Appointment::where('id',$id)->where('doctor_id',$doctor->id)->first();
+        if($appointment){
+            $appointment->date=$request->date;
+            $appointment->time=$request->time;
+            $appointment->save();
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -30,6 +30,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                 <table class="table table-striped" id="sortable-table">
                   <thead>
                     <tr>
+                        <th>Sl.No</th>
                       <th>Name</th>
                       <th>Email</th>
                       <th>Phone</th>
@@ -41,6 +42,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                   <tbody class="ui-sortable">
                     @foreach ($appointments as $appointment)
                     <tr>
+                        <td>{{ $loop->iteration }}</td>
                       <td>
                         {{$appointment->name}}
                       </td>
@@ -60,6 +62,9 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                                         <button class="btn btn-primary btn-sm" >Approve</button>
                                     </a>
                                     <a href="{{ route('portal.appointments.decline',$appointment->id) }}"><button class="btn btn-danger btn-sm">Decline</button></a>
+                                    <a href="{{ route('portal.appointments.reschedule',$appointment->id) }}">
+                                        <button class="btn btn-warning btn-sm">Reschedule</button>
+                                    </a>
                                 @else
                                     <span class="badge badge-success" >Approved</span>
                                 @endif
@@ -67,7 +72,6 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                         @else
                             <span class="badge badge-danger">Expired</span>
                         @endif
-
                         </td>
                     </tr>
                     @endforeach
