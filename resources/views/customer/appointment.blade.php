@@ -54,7 +54,8 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                   </div>
               <div class="col-md-6 mb-3 mb-md-0">
                 <label class="font-weight-bold" for="date">Date</label>
-                <input type="date" id="date" class="form-control datepicker px-2" name="date" placeholder="Date of visit" value="{{ old('date') }}" min="<?php echo date("Y-m-d"); ?>">
+                <input type="date" id="date" class="form-control datepicker px-2" name="date" placeholder="Date of visit"
+                 value="{{ old('date') }}" min="{{ date("Y-m-d") }}" max="{{ date('Y-m-d', strtotime(date("Y-m-d"). ' + 30 days')); }}">
                 @error('date')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
