@@ -45,7 +45,7 @@
                     <div class="mb-3 col-md-6">
                       <label for="date" class="form-label">Date</label>
                       <input type="date" class="form-control" id="date" name="date"
-                      value="{{ $appointment->date }}" placeholder="enter date" min="{{ date("Y-m-d") }}">
+                      value="{{ $appointment->date }}" placeholder="enter date" min="{{ date("Y-m-d") }}" max="{{ date('Y-m-d', strtotime(date("Y-m-d"). ' + 30 days')); }}">
                         @error('date')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
