@@ -110,34 +110,16 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js">
 </script>
 <script>
-    $(document).ready(function(){
+$(document).ready(function(){
     $('#time').timepicker({
         interval: 30,
         minTime: '09:00',
         maxTime: '18:00',
         startTime: '09:00',
     });
-    // @if(session('success'))
-    // Swal.fire(
-    //         'Success!',
-    //         '{{ session("success") }}'
-    //         'success'
-    //         );
-    // @endif
-    // @if(session('error'))
-    // Swal.fire(
-    //         'Error!',
-    //         '{{ session("error") }}',
-    //         'error'
-    //         );
-    // @endif
 
-
-});
-$(document).ready(function () {
-
-if ($("#appointment_form").length > 0) {
-    $("#appointment_form").validate({
+    if ($("#appointment_form").length > 0) {
+        $("#appointment_form").validate({
         rules: {
             name: {
                 required: true,
@@ -237,8 +219,7 @@ if ($("#appointment_form").length > 0) {
             });
         }
     })
-}
-
+    }
 });
-    </script>
+</script>
 @endpush
