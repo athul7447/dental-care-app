@@ -34,8 +34,8 @@
                 @endif
                 </a>
             </div>
-            <div class="table-responsive text-nowrap ">
-              <table class="table table-striped datatable">
+            <div class="card-datatable table-responsive pt-0">
+              <table class="datatables-basic table border-top datatable">
                 <thead>
                   <tr>
                     <th>Name</th>
