@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AppointmentRequest;
+use App\Mail\AppointmentMail;
+use App\Mail\ThankyouMail;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
@@ -55,6 +58,9 @@ class CustomerController extends Controller
             $appointment->doctor_id=$request->doctor_name;
             $appointment->note=$request->note;
             $appointment->save();
+            Mail::to($doctor->email)->send(new AppointmentMail($appointment));
+            $mailData=['name'=>$appointment->name];
+            Mail::to($request->email)->send(new ThankyouMail($mailData));
             return redirect()->route('customer.appointment')->with('success','Appointment has been submitted successfully');
         }catch(\Exception $e){
             return redirect()->route('customer.appointment')->with('error',$e->getMessage());

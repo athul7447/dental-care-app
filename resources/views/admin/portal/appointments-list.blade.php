@@ -54,7 +54,7 @@
                         <td>{{ $appointment->email }}</td>
                         <td>{{ $appointment->phone }}</td>
                         <td>{{ $appointment->date."/".$appointment->time }}</td>
-                        <td>{{ $appointment->note }}</td>
+                        <td >{{ $appointment->note }}</td>
                         <td>
                             @if($appointment->date >= date('Y-m-d'))
                                 @if($appointment->is_declined == 1)

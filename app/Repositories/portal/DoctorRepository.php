@@ -1,9 +1,13 @@
 <?php
 namespace App\Repositories\portal;
 
+use App\Mail\ApproveMail;
+use App\Mail\DeclineMail;
+use App\Mail\RescheduleMail;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class DoctorRepository
@@ -56,10 +60,18 @@ class DoctorRepository
 
     public function approveAppointment($id,$doctor_id)
     {
-        $appointment=Appointment::where('id',$id)->where('doctor_id',$doctor_id)->first();
+        $appointment=Appointment::where('id',$id)->where('is_declined',0)->where('doctor_id',$doctor_id)->first();
         if($appointment){
             $appointment->status=1;
             $appointment->save();
+            $doctor=Doctor::find($doctor_id);
+            $mailData=[
+                'name'=>$appointment->name,
+                'date'=>$appointment->date,
+                'time'=>$appointment->time,
+                'doctor'=>$doctor->name,
+            ];
+            Mail::to($appointment->email)->send(new ApproveMail($mailData));
             return true;
         }
         return false;
@@ -73,10 +85,14 @@ class DoctorRepository
 
     public function declineAppointment($id,$doctor_id)
     {
-        $appointment=Appointment::where('id',$id)->where('doctor_id',$doctor_id)->first();
+        $appointment=Appointment::where('id',$id)->where('status',0)->where('doctor_id',$doctor_id)->first();
         if($appointment){
             $appointment->is_declined=1;
             $appointment->save();
+            $mailData=[
+                'name'=>$appointment->name,
+            ];
+            Mail::to($appointment->email)->send(new DeclineMail($mailData));
             return true;
         }
         return false;
@@ -121,7 +137,10 @@ class DoctorRepository
     public function updateAppointment($request,$id,$doctor)
     {
         $date=date('Y-m-d',strtotime($request->date));
-        $doctorAppointment=Appointment::where('doctor_id',$doctor->id)->where('date',$date)->count();
+        $doctorAppointment=Appointment::where('doctor_id',$doctor->id)
+                            ->where('status',0)
+                            ->where('is_declined',0)
+                            ->where('date',$date)->count();
         if($doctorAppointment > $doctor->appointment_per_day){
             return false;
         }
@@ -129,7 +148,15 @@ class DoctorRepository
         if($appointment){
             $appointment->date=$request->date;
             $appointment->time=$request->time;
+            $appointment->status=1;
             $appointment->save();
+            $mailData=[
+                'name'=>$appointment->name,
+                'date'=>$appointment->date,
+                'time'=>$appointment->time,
+                'doctor'=>$doctor->name,
+            ];
+            Mail::to($appointment->email)->send(new RescheduleMail($mailData));
             return true;
         }
         return false;

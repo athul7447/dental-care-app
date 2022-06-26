@@ -188,7 +188,7 @@ class AdminController extends Controller
         try {
            $result= $this->adminRepository->approveAppointment($doctorId,$id);
             if($result){
-                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('message', 'Appointment approve status successfully');
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('message', 'Appointment approval status changed successfully');
             }else{
                 return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
             }

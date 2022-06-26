@@ -1,10 +1,13 @@
 <?php
 namespace App\Repositories\Admin;
 
+use App\Mail\ApproveMail;
+use App\Mail\DeclineMail;
 use App\Models\Admin;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class AdminRepository
@@ -107,10 +110,20 @@ class AdminRepository
 
     public function approveAppointment($doctorId,$id)
     {
-        $appointment = Appointment::where('doctor_id',$doctorId)->where('id',$id)->first();
+        $appointment = Appointment::where('doctor_id',$doctorId)->where('is_declined',0)->where('id',$id)->first();
         if($appointment){
             $appointment->status =!$appointment->status;
             $appointment->save();
+            if($appointment->status){
+                $doctor = Doctor::select('name')->where('id',$doctorId)->first();
+                $mailData=[
+                    'name'=>$appointment->name,
+                    'date'=>$appointment->date,
+                    'time'=>$appointment->time,
+                    'doctor'=>$doctor->name,
+                ];
+                Mail::to($appointment->email)->send(new ApproveMail($mailData));
+            }
             return true;
         }
         return false;
@@ -162,10 +175,16 @@ class AdminRepository
 
     public function declineAppointment($doctorId,$id)
     {
-        $appointment = Appointment::where('doctor_id',$doctorId)->where('id',$id)->first();
+        $appointment = Appointment::where('doctor_id',$doctorId)->where('status',0)->where('id',$id)->first();
         if($appointment){
             $appointment->is_declined = !$appointment->is_declined;
             $appointment->save();
+            if($appointment->is_declined){
+                $mailData=[
+                    'name'=>$appointment->name,
+                ];
+                Mail::to($appointment->email)->send(new DeclineMail($mailData));
+            }
             return true;
         }
         return false;
