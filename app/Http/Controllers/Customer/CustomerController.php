@@ -47,7 +47,7 @@ class CustomerController extends Controller
             $date=date('Y-m-d',strtotime($request->date));
             $doctorAppointment=Appointment::where('doctor_id',$doctorId)->where('date',$date)->count();
             if($doctorAppointment > $doctor->appointment_per_day){
-                return redirect()->route('customer.appointment')->with('error','Appointment limit reached for this doctor');
+                return response()->json(['status'=>'error','message'=>'Appointment limit reached for this doctor']);
             }
             $appointment=new Appointment();
             $appointment->name=$request->name;
@@ -61,9 +61,9 @@ class CustomerController extends Controller
             Mail::to($doctor->email)->send(new AppointmentMail($appointment));
             $mailData=['name'=>$appointment->name];
             Mail::to($request->email)->send(new ThankyouMail($mailData));
-            return redirect()->route('customer.appointment')->with('success','Appointment has been submitted successfully');
+            return response()->json(['success'=>'Appointment Successfully Submitted']);
         }catch(\Exception $e){
-            return redirect()->route('customer.appointment')->with('error',$e->getMessage());
+            return response()->json(['error'=>$e->getMessage()]);
         }
 
     }

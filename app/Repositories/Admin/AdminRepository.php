@@ -83,7 +83,16 @@ class AdminRepository
     public function deleteDoctor($id)
     {
         $doctor = Doctor::findOrFail($id);
+        $appointment=Appointment::where('doctor_id',$id)
+        ->where('status',0)
+        ->where('is_declined',0)
+        ->where('date','>=',date('Y-m-d'))
+        ->count();
+        if($appointment>0){
+            return false;
+        }
         $doctor->delete();
+        $appointment=Appointment::where('doctor_id',$id)->delete();
         return true;
     }
 
