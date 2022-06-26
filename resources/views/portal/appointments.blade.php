@@ -27,56 +27,58 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
           <div class="card">
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table class="table table-striped" id="sortable-table">
-                  <thead>
-                    <tr>
-                        <th>Sl.No</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Date & Time</th>
-                      <th>Note</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody class="ui-sortable">
-                    @foreach ($appointments as $appointment)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                      <td>
-                        {{$appointment->name}}
-                      </td>
-                      <td>{{$appointment->email}}</td>
-                      <td>
-                        {{$appointment->phone}}
-                      </td>
-                      <td>{{$appointment->date.'/'.$appointment->time}}</td>
-                      <td>{{$appointment->note}}</td>
-                      <td>
-                        @if($appointment->date >= date('Y-m-d'))
-                            @if($appointment->is_declined == 1)
-                                <span class="badge badge-danger">Declined</span>
-                            @else
-                                @if($appointment->status == 0)
-                                    <a href="{{ route('portal.appointments.approve',$appointment->id) }}">
-                                        <button class="btn btn-primary btn-sm" >Approve</button>
-                                    </a>
-                                    <a href="{{ route('portal.appointments.decline',$appointment->id) }}"><button class="btn btn-danger btn-sm">Decline</button></a>
-                                    <a href="{{ route('portal.appointments.reschedule',$appointment->id) }}">
-                                        <button class="btn btn-warning btn-sm">Reschedule</button>
-                                    </a>
-                                @else
-                                    <span class="badge badge-success" >Approved</span>
-                                @endif
-                            @endif
-                        @else
-                            <span class="badge badge-danger">Expired</span>
-                        @endif
+                <div class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer" id="table-2_wrapper">
+                    <table class="table table-striped dataTable no-footer" id="sortable-table">
+                    <thead>
+                        <tr>
+                            <th>Sl.No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Date & Time</th>
+                        <th>Note</th>
+                        <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="ui-sortable">
+                        @foreach ($appointments as $appointment)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                        <td>
+                            {{$appointment->name}}
                         </td>
-                    </tr>
-                    @endforeach
-                  </tbody>
-                </table>
+                        <td>{{$appointment->email}}</td>
+                        <td>
+                            {{$appointment->phone}}
+                        </td>
+                        <td>{{$appointment->date.'/'.$appointment->time}}</td>
+                        <td>{{$appointment->note}}</td>
+                        <td>
+                            @if($appointment->date >= date('Y-m-d'))
+                                @if($appointment->is_declined == 1)
+                                    <span class="badge badge-danger">Declined</span>
+                                @else
+                                    @if($appointment->status == 0)
+                                        <a href="{{ route('portal.appointments.approve',$appointment->id) }}">
+                                            <button class="btn btn-primary btn-sm" >Approve</button>
+                                        </a>
+                                        <a href="{{ route('portal.appointments.decline',$appointment->id) }}"><button class="btn btn-danger btn-sm">Decline</button></a>
+                                        <a href="{{ route('portal.appointments.reschedule',$appointment->id) }}">
+                                            <button class="btn btn-warning btn-sm">Reschedule</button>
+                                        </a>
+                                    @else
+                                        <span class="badge badge-success" >Approved</span>
+                                    @endif
+                                @endif
+                            @else
+                                <span class="badge badge-danger">Expired</span>
+                            @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                    </table>
+                </div>
               </div>
             </div>
           </div>
