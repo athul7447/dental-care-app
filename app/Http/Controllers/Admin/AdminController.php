@@ -141,8 +141,12 @@ class AdminController extends Controller
     public function deleteDoctor($id)
     {
         try {
-            $this->adminRepository->deleteDoctor($id);
-            return redirect()->route('admin.portal.doctors')->with('message', 'Doctor deleted successfully');
+            $result=$this->adminRepository->deleteDoctor($id);
+            if($result){
+                return redirect()->route('admin.portal.doctors')->with('message', 'Doctor deleted successfully');
+            }else{
+                return redirect()->route('admin.portal.doctors')->with('error', 'Doctor have appointments.Please delete appointments first');
+            }
         } catch (\Exception $e) {
             return redirect()->route('admin.portal.doctors')->with('error', $e->getMessage());
         }
