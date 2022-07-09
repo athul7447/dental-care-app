@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+
+    private $adminRepository;
     public function __construct(AdminRepository $adminRepository)
     {
         $this->adminRepository = $adminRepository;
@@ -22,7 +24,16 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $allAppointmentsCount = $this->adminRepository->getAllAppointmentsCount();
+        $allDoctorsCount = $this->adminRepository->getAllDoctorsCount();
+        $todaysAppointmentCount = $this->adminRepository->getTodaysAppointmentCount();
+        $totalDeclinedAppointmentCount = $this->adminRepository->getTotalDeclinedAppointmentCount();
+        return view('admin.dashboard',compact(
+            'allAppointmentsCount',
+            'allDoctorsCount',
+            'todaysAppointmentCount',
+            'totalDeclinedAppointmentCount'
+        ));
     }
 
     public function profile()
@@ -130,8 +141,12 @@ class AdminController extends Controller
     public function deleteDoctor($id)
     {
         try {
-            $this->adminRepository->deleteDoctor($id);
-            return redirect()->route('admin.portal.doctors')->with('message', 'Doctor deleted successfully');
+            $result=$this->adminRepository->deleteDoctor($id);
+            if($result){
+                return redirect()->route('admin.portal.doctors')->with('message', 'Doctor deleted successfully');
+            }else{
+                return redirect()->route('admin.portal.doctors')->with('error', 'Doctor have appointments.Please delete appointments first');
+            }
         } catch (\Exception $e) {
             return redirect()->route('admin.portal.doctors')->with('error', $e->getMessage());
         }
@@ -177,7 +192,7 @@ class AdminController extends Controller
         try {
            $result= $this->adminRepository->approveAppointment($doctorId,$id);
             if($result){
-                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('message', 'Appointment approve status successfully');
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('message', 'Appointment approval status changed successfully');
             }else{
                 return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
             }
@@ -222,10 +237,39 @@ class AdminController extends Controller
             {
                 return redirect()->route('admin.portal.doctors')->with('message', 'Appointment updated successfully');
             }else{
-                return redirect()->route('admin.portal.doctors')->with('error', 'Something wrong happened!');
+                return redirect()->route('admin.portal.doctors.appointments.edit',[$doctorId,$id])->with('error', "Doctor's per day appointment limit is reached");
             }
         } catch (\Exception $e) {
             return redirect()->route('admin.portal.doctors')->with('error', 'Something wrong happened!');
+        }
+    }
+
+    public function declineAppointment($doctorId,$id)
+    {
+        try {
+            $result= $this->adminRepository->declineAppointment($doctorId,$id);
+            if($result){
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('message', 'Appointment decline status changed successfully ');
+            }else{
+                return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors.appointments',$doctorId)->with('error', 'Something wrong happened!');
+        }
+    }
+
+    public function appointmentCalendar($doctorId)
+    {
+        try {
+            $appointments = $this->adminRepository->getDoctorAppointments($doctorId);
+            $doctorId = $doctorId;
+            if($appointments->count() > 0){
+                return view('admin.portal.appointment-calendar',compact('appointments','doctorId'));
+            }else{
+                return redirect()->route('admin.portal.doctors')->with('error', 'No appointments found');
+            }
+        }catch (\Exception $e) {
+            return redirect()->route('admin.portal.doctors')->with('error','No appointments found');
         }
     }
 

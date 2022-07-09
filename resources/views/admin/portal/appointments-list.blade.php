@@ -13,7 +13,13 @@
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Doctors /</span>   Appointments </h4>
     <div class="row">
         <div class="card">
+
             <div class="table-head p-3">
+                <div class="col-md-2">
+                    <a href="{{ route('admin.portal.doctors.calendar',$doctorId) }}">
+                    <button type="button" class="btn rounded-pill btn-warning">View Calendar</button>
+                    </a>
+                </div>
                 @if (session('message'))
                 <div class="alert alert-success alert-dismissible" role="alert">
                     {{ session('message') }}
@@ -28,8 +34,8 @@
                 @endif
                 </a>
             </div>
-            <div class="table-responsive text-nowrap ">
-              <table class="table table-striped datatable">
+            <div class="card-datatable table-responsive pt-0">
+              <table class="datatables-basic table border-top datatable">
                 <thead>
                   <tr>
                     <th>Name</th>
@@ -48,16 +54,28 @@
                         <td>{{ $appointment->email }}</td>
                         <td>{{ $appointment->phone }}</td>
                         <td>{{ $appointment->date."/".$appointment->time }}</td>
-                        <td>{{ $appointment->note }}</td>
+                        <td >{{ $appointment->note }}</td>
                         <td>
-                            @if($appointment->status == 0)
-                            <a href="{{ route('admin.portal.doctors.appointments.approve',[$doctorId,$appointment->id]) }}">
-                                <button class="btn btn-danger btn-sm" >Approve</button>
-                            </a>
+                            @if($appointment->date >= date('Y-m-d'))
+                                @if($appointment->is_declined == 1)
+                                <a href="{{ route('admin.portal.doctors.appointments.decline',[$doctorId,$appointment->id]) }}">
+                                    <button class="btn btn-warning btn-sm">Declined</button>
+                                </a>
+                                @else
+                                    @if($appointment->status == 0)
+                                        <a href="{{ route('admin.portal.doctors.appointments.approve',[$doctorId,$appointment->id]) }}">
+                                            <button class="btn btn-primary btn-sm" >Approve</button>
+                                        </a>
+                                        <a href="{{ route('admin.portal.doctors.appointments.decline',[$doctorId,$appointment->id]) }}">
+                                            <button class="btn btn-danger btn-sm">Decline</button>
+                                        </a>
+                                    @else
+                                    <a href="{{ route('admin.portal.doctors.appointments.approve',[$doctorId,$appointment->id]) }}">
+                                        <button class="btn btn-success btn-sm" >Approved</button>
+                                    @endif
+                                @endif
                             @else
-                            <a href="{{ route('admin.portal.doctors.appointments.approve',[$doctorId,$appointment->id]) }}">
-                                <button class="btn btn-success btn-sm" >Approved</button>
-                            </a>
+                                <span class="badge rounded-pill bg-danger">Expired</span>
                             @endif
                         </td>
                         <td>
@@ -76,6 +94,7 @@
           </div>
     </div>
 </div>
+
 @push('scripts')
     <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script>

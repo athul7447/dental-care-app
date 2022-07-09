@@ -1,10 +1,13 @@
 <?php
 namespace App\Repositories\Admin;
 
+use App\Mail\ApproveMail;
+use App\Mail\DeclineMail;
 use App\Models\Admin;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class AdminRepository
@@ -68,6 +71,7 @@ class AdminRepository
         $doctor->phone = $request->phone;
         $doctor->address = $request->address;
         $doctor->qualification = $request->qualification;
+        $doctor->appointment_per_day = $request->appointment_per_day;
         $doctor->username = $request->username;
         if($request->password){
             $doctor->password = Hash::make($request->password);
@@ -79,7 +83,16 @@ class AdminRepository
     public function deleteDoctor($id)
     {
         $doctor = Doctor::findOrFail($id);
+        $appointment=Appointment::where('doctor_id',$id)
+        ->where('status',0)
+        ->where('is_declined',0)
+        ->where('date','>=',date('Y-m-d'))
+        ->count();
+        if($appointment>0){
+            return false;
+        }
         $doctor->delete();
+        $appointment=Appointment::where('doctor_id',$id)->delete();
         return true;
     }
 
@@ -106,10 +119,20 @@ class AdminRepository
 
     public function approveAppointment($doctorId,$id)
     {
-        $appointment = Appointment::where('doctor_id',$doctorId)->where('id',$id)->first();
+        $appointment = Appointment::where('doctor_id',$doctorId)->where('is_declined',0)->where('id',$id)->first();
         if($appointment){
             $appointment->status =!$appointment->status;
             $appointment->save();
+            if($appointment->status){
+                $doctor = Doctor::select('name')->where('id',$doctorId)->first();
+                $mailData=[
+                    'name'=>$appointment->name,
+                    'date'=>$appointment->date,
+                    'time'=>$appointment->time,
+                    'doctor'=>$doctor->name,
+                ];
+                Mail::to($appointment->email)->send(new ApproveMail($mailData));
+            }
             return true;
         }
         return false;
@@ -137,6 +160,13 @@ class AdminRepository
 
     public function updateAppointment($request,$doctorId,$id)
     {
+        $doctor=Doctor::findorfail($doctorId);
+        $appointmentPerDay=$doctor->appointment_per_day;
+        $date=date('Y-m-d',strtotime($request->date));
+        $doctorAppointment=Appointment::where('doctor_id',$doctorId)->where('date',$date)->count();
+        if($doctorAppointment > $appointmentPerDay){
+            return false;
+        }
         $appointment = Appointment::where('doctor_id',$doctorId)->where('id',$id)->first();
         if($appointment){
             $appointment->name = $request->name;
@@ -150,5 +180,47 @@ class AdminRepository
             return true;
         }
         return false;
+    }
+
+    public function declineAppointment($doctorId,$id)
+    {
+        $appointment = Appointment::where('doctor_id',$doctorId)->where('status',0)->where('id',$id)->first();
+        if($appointment){
+            $appointment->is_declined = !$appointment->is_declined;
+            $appointment->save();
+            if($appointment->is_declined){
+                $mailData=[
+                    'name'=>$appointment->name,
+                ];
+                Mail::to($appointment->email)->send(new DeclineMail($mailData));
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public function getDoctorAppointments($doctorId)
+    {
+        return Appointment::where('doctor_id',$doctorId)->get();
+    }
+
+    public function getAllAppointmentsCount()
+    {
+        return Appointment::count();
+    }
+
+    public function getAllDoctorsCount()
+    {
+        return Doctor::count();
+    }
+
+    public function getTodaysAppointmentCount()
+    {
+        return Appointment::whereDate('date',date('Y-m-d'))->count();
+    }
+
+    public function getTotalDeclinedAppointmentCount()
+    {
+        return Appointment::where('is_declined',1)->count();
     }
 }

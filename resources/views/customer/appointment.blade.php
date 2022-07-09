@@ -8,6 +8,9 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
     background-color: #ffffff !important;
     opacity: 1;
     }
+    .error{
+        color: red !important;
+    }
 </style>
 @endpush
 @section('content')
@@ -18,14 +21,14 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
           <span class="sub-text">book your appointment now !</span>
           <h1><strong>Book</strong> Appointment</h1>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+</div>
+<a name="appointment-form"></a>
   <div class="site-section bg-light">
     <div class="container">
         <h2 class="site-heading text-black mb-5"><strong>Appointment</strong></h2>
         <div class="col">
-            <a name="appointment-form"></a>
           <form action="{{ route('customer.submit-appointment') }}" class="p-5 bg-white mb-5 mb-lg-0" method="post" id="appointment_form">
             @csrf
             <div class="row form-group">
@@ -54,7 +57,8 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                   </div>
               <div class="col-md-6 mb-3 mb-md-0">
                 <label class="font-weight-bold" for="date">Date</label>
-                <input type="date" id="date" class="form-control datepicker px-2" name="date" placeholder="Date of visit" value="{{ old('date') }}" min="<?php echo date("Y-m-d"); ?>">
+                <input type="date" id="date" class="form-control datepicker px-2" name="date" placeholder="Date of visit"
+                 value="{{ old('date') }}" min="{{ date("Y-m-d") }}" max="{{ date('Y-m-d', strtotime(date("Y-m-d"). ' + 30 days')); }}">
                 @error('date')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -92,7 +96,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
             </div>
             <div class="row form-group">
               <div class="col-md-12">
-                <input type="submit" value="Send" class="btn btn-primary">
+                <button type="submit" value="Send" class="btn btn-primary" id="submit">Submit</button>
               </div>
             </div>
           </form>
@@ -101,23 +105,121 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
   </div>
   @endsection
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.18/sweetalert2.min.js" integrity="sha512-98hK38IvWQC069FFbq/la6NaBj4TGplZ118B+bFVOxsBQQL4EqKUWw9JkNh8Lem7FCGkLCxgr81q+/hRIemJCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js">
 </script>
 <script>
-    $(document).ready(function(){
-    $('#time').timepicker();
-    @if(session('success'))
-    Swal.fire(
-            'Success!',
-            'Appointment has been submitted successfully',
-            'success'
-            );
-    @endif
+$(document).ready(function(){
+    $('#time').timepicker({
+        interval: 30,
+        minTime: '09:00',
+        maxTime: '18:00',
+        startTime: '09:00',
+    });
 
+    if ($("#appointment_form").length > 0) {
+        $("#appointment_form").validate({
+        rules: {
+            name: {
+                required: true,
+                maxlength: 50
+            },
+            email: {
+                required: true,
+                maxlength: 50,
+                email: true,
+            },
+            phone: {
+                required: true,
+                maxlength: 10,
+                minlength: 10,
+                digits: true,
+            },
+            date: {
+                required: true,
+                min: '{{ date("Y-m-d") }}',
+                max: '{{ date('Y-m-d', strtotime(date("Y-m-d"). ' + 30 days')); }}',
+            },
+            time: {
+                required: true,
+            },
+            doctor_name: {
+                required: true,
+            },
+            note: {
+                required: true,
+                maxlength: 500,
+            },
+        },
+        messages: {
+            name: {
+                required: "Please enter name",
+                maxlength: "Your name maxlength should be 50 characters long."
+            },
+            email: {
+                required: "Please enter valid email",
+                email: "Please enter valid email",
+                maxlength: "The email name should less than or equal to 50 characters",
+            },
+            phone: {
+                required: "Please enter phone number",
+                maxlength: "The phone number should less than or equal to 10 characters",
+                minlength: "The phone number should less than or equal to 10 characters",
+                digits: "The phone number should be digits",
+            },
+            date: {
+                required: "Please enter date",
+                min: "Please enter valid date",
+                max: "Please enter valid date",
+            },
+            time: {
+                required: "Please enter time",
+            },
+            doctor_name: {
+                required: "Please select doctor",
+            },
+            note: {
+                required: "Please enter note",
+                maxlength: "The note should less than or equal to 500 characters",
+            },
+
+        },
+        submitHandler: function(form) {
+            $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        var forms=$('#appointment_form');
+            $('#submit').html('Please Wait...');
+            $("#submit"). attr("disabled", true);
+            $.ajax({
+                url: forms.attr('action'),
+                type: forms.attr('method'),
+                data: forms.serialize(),
+                success: function( response ) {
+                    $('#submit').html('Submit');
+                    $("#submit"). attr("disabled", false);
+                    if(response.success){
+                        Swal.fire(
+                            'Success!',
+                            response.success,
+                            'success'
+                        );
+                        $('#appointment_form')[0].reset();
+                    }else{
+                        Swal.fire(
+                            'Error!',
+                            response.message,
+                            'error'
+                        );
+                    }
+                }
+            });
+        }
+    })
+    }
 });
-window.onload = (event) => {
-  window.location.href = '{{route("customer.appointment")  }}'+'#appointment-form';
-};
-    </script>
+</script>
 @endpush

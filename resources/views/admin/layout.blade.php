@@ -14,7 +14,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Dente | Admin</title>
+    <title>Tooth Fairies | Admin</title>
 
     <meta name="description" content="" />
 
@@ -66,7 +66,7 @@
           <div class="app-brand demo">
             <img src="{{asset('admin_assets/img/favicon/fav_icon.png')}}" alt="logo" style="height: 50px;">
             <a href="{{ route('admin.dashboard') }}" class="app-brand-link">
-              <span class="demo menu-text fw-bolder ms-2">DENTE ADMIN</span>
+              <span class="demo menu-text fw-bolder ms-2">Tooth Fairies ADMIN</span>
             </a>
 
             <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -117,7 +117,7 @@
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                      <img src="{{asset('admin_assets/img/avatars/1.png')}}" alt class="w-px-40 h-auto rounded-circle" />
+                      <img src="{{asset('doctor_assets/img/avatar/avatar-3.png')}}" alt class="w-px-40 h-auto rounded-circle" />
                     </div>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -126,7 +126,7 @@
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
-                              <img src="{{asset('admin_assets/img/avatars/1.png')}}" alt class="w-px-40 h-auto rounded-circle" />
+                              <img src="{{asset('doctor_assets/img/avatar/avatar-3.png')}}" alt class="w-px-40 h-auto rounded-circle" />
                             </div>
                           </div>
                           <div class="flex-grow-1">

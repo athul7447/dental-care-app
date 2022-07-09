@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Dente</title>
+    <title>Tooth Fairies</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,700,900">
@@ -45,7 +45,7 @@
               <div class="d-flex ml-auto">
                 <a href="#" class="d-flex align-items-center ml-auto mr-4">
                   <span class="icon-phone mr-2"></span>
-                  <span class="d-none d-md-inline-block">dente@gmail.com</span>
+                  <span class="d-none d-md-inline-block">toothfaires01@gmail.com</span>
                 </a>
                 <a href="#" class="d-flex align-items-center">
                   <span class="icon-envelope mr-2"></span>
@@ -59,8 +59,8 @@
       <div class="site-navbar">
         <div class="container py-1">
           <div class="row align-items-center">
-            <div class="col-2">
-              <h2 class="mb-0 site-logo"><a href="index.html">Dente</a></h2>
+            <div class="col-4">
+              <h2 class="mb-0 site-logo"><a href="index.html">Tooth Fairies</a></h2>
             </div>
             <div class="col-10">
               <nav class="site-navigation text-right" role="navigation">
@@ -161,20 +161,6 @@
 
             <div class="col-lg-4 mb-5 mb-lg-0">
 
-              <div class="mb-5">
-                <h3 class="footer-heading mb-2">Subscribe Newsletter</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit minima minus odio.</p>
-
-                <form action="#" method="post">
-                  <div class="input-group mb-3">
-                    <input type="text" class="form-control border-white text-white bg-transparent" placeholder="Enter Email" aria-label="Enter Email" aria-describedby="button-addon2">
-                    <div class="input-group-append">
-                      <button class="btn btn-primary" type="button" id="button-addon2">Send</button>
-                    </div>
-                  </div>
-                </form>
-
-              </div>
 
               <div class="row">
                 <div class="col-md-12">

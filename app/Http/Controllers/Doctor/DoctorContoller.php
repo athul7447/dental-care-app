@@ -19,7 +19,16 @@ class DoctorContoller extends Controller
 
     public function dashboard()
     {
-        return view('portal.dashboard');
+        $todaysAppointmentCount = $this->doctorRepository->getTodaysAppointmentCount(Auth::id());
+        $allAppointmentsCount = $this->doctorRepository->getAllAppointmentsCount(Auth::id());
+        $approvedAppointmentsCount = $this->doctorRepository->getApprovedAppointmentsCount(Auth::id());
+        $declinedAppointmentsCount = $this->doctorRepository->getDeclinedAppointmentsCount(Auth::id());
+        return view('portal.dashboard',compact(
+            'todaysAppointmentCount',
+            'allAppointmentsCount',
+            'approvedAppointmentsCount',
+            'declinedAppointmentsCount'
+        ));
     }
 
     public function myProfile()
@@ -37,6 +46,7 @@ class DoctorContoller extends Controller
             'qualification' => 'bail|required|max:255|string',
             'phone' => 'bail|required|max:255|string',
             'address' => 'bail|required|max:500|string',
+            'appointment_per_day' => 'bail|required|max:50|numeric',
             'password' => 'bail|nullable|min:6|confirmed',
         ]);
         try{
@@ -51,7 +61,8 @@ class DoctorContoller extends Controller
 
     public function appointmentsCalendar()
     {
-        return view('portal.booking');
+        $appointments=$this->doctorRepository->getAppointments(Auth::guard('portal')->user()->id);
+        return view('portal.booking',compact('appointments'));
     }
 
     public function appointments()
@@ -71,6 +82,49 @@ class DoctorContoller extends Controller
             }
         }catch(\Exception $e){
             return redirect()->route('portal.appointments')->with('error','Appointment Approval Failed');
+        }
+    }
+
+    public function declineAppointment($id)
+    {
+        try{
+            $result=$this->doctorRepository->declineAppointment($id,Auth::id());
+            if($result){
+                return redirect()->route('portal.appointments')->with('success','Appointment Declined Successfully');
+            }else{
+                return redirect()->route('portal.appointments')->with('error','Appointment Decline Failed');
+            }
+        }catch(\Exception $e){
+            return redirect()->route('portal.appointments')->with('error','Appointment Decline Failed');
+        }
+    }
+
+    public function rescheduleAppointment($id)
+    {
+        $appointment=$this->doctorRepository->getAppointment($id,Auth::id());
+        $doctors=$this->doctorRepository->getDoctors();
+        if($appointment){
+            return view('portal.reshedule-appointment',compact('appointment','doctors'));
+        }else{
+            return redirect()->route('portal.appointments')->with('error','Appointment Not Found');
+        }
+    }
+
+    public function updateRescheduleAppointment(Request $request,$id)
+    {
+        $request->validate([
+            'date' => 'bail|required|date',
+            'time' => 'bail|required',
+        ]);
+        try{
+            $result=$this->doctorRepository->updateAppointment($request,$id,Auth::user());
+            if($result){
+                return redirect()->route('portal.appointments')->with('success','Appointment Reshedule Successfully');
+            }else{
+                return redirect()->route('portal.appointments.reshedule',$id)->with('error','Your appointment limit is reached');
+            }
+        }catch(\Exception $e){
+            return redirect()->route('portal.appointments.reshedule',$id)->with('error','Appointment Reshedule Failed');
         }
     }
 

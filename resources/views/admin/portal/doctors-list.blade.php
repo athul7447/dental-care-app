@@ -34,8 +34,8 @@
                     </button>
                 </a>
             </div>
-            <div class="table-responsive text-nowrap ">
-              <table class="table table-striped datatable">
+            <div class="card-datatable table-responsive pt-0">
+              <table class="datatables-basic table border-to datatable">
                 <thead>
                   <tr>
                     <th>Image</th>
@@ -72,10 +72,11 @@
                                 </button>
                             </td>
                             <td>
-                                <div class="form-check form-switch verify">
-                                    <input class="form-check-input float-center verify" data-action="{{ route('admin.portal.doctors.verify',$doctor->id) }}" type="checkbox" role="switch"
-                                    {{ $doctor->isVerified()?'checked':'' }}>
-                                </div>
+                                @if($doctor->isVerified())
+                                <span class="badge bg-label-success">Verified</span>
+                                @else
+                                <button type="button" data-action="{{ route('admin.portal.doctors.verify',$doctor->id) }}" class="btn btn-secondary btn-sm verify">Verify</button>
+                                @endif
                             </td>
                             <td>
                                 <div class="form-check form-switch ">
@@ -129,7 +130,6 @@
         });
         $('.verify').on('click', function(e){
             e.preventDefault();
-            if($(this).prop('checked')){
                 var url = $(this).data('action');
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
@@ -150,7 +150,6 @@
                         window.location.href = url;
                     }
                 });
-            }
         });
         $('.status').on('click', function(e){
             e.preventDefault();

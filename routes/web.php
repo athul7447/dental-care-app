@@ -48,6 +48,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/doctors/{doctor_id}/appointments/{appointment_id}/delete',[\App\Http\Controllers\Admin\AdminController::class,'deleteAppointment'])->name('portal.doctors.appointments.delete');
         Route::get('/doctors/{doctor_id}/appointments/{appointment_id}/edit',[\App\Http\Controllers\Admin\AdminController::class,'editAppointment'])->name('portal.doctors.appointments.edit');
         Route::post('/doctors/{doctor_id}/appointments/{appointment_id}/update',[\App\Http\Controllers\Admin\AdminController::class,'updateAppointment'])->name('portal.doctors.appointments.update');
+        Route::get('/doctors/{doctor_id}/appointments/{appointment_id}/decline',[\App\Http\Controllers\Admin\AdminController::class,'declineAppointment'])->name('portal.doctors.appointments.decline');
+        Route::get('/doctors/{doctor_id}/calendar',[\App\Http\Controllers\Admin\AdminController::class,'appointmentCalendar'])->name('portal.doctors.calendar');
     });
 });
 
@@ -62,5 +64,8 @@ Route::prefix('portal')->name('portal.')->group(function () {
     Route::post('/profile/update',[\App\Http\Controllers\Doctor\DoctorContoller::class,'updateProfile'])->name('profile.update');
     Route::get('/appointments',[\App\Http\Controllers\Doctor\DoctorContoller::class,'appointments'])->name('appointments');
     Route::get('/appointments/{id}/approve',[\App\Http\Controllers\Doctor\DoctorContoller::class,'approveAppointment'])->name('appointments.approve');
+    Route::get('/appointments/{id}/decline',[\App\Http\Controllers\Doctor\DoctorContoller::class,'declineAppointment'])->name('appointments.decline');
+    Route::get('/appointments/{id}/reschedule',[\App\Http\Controllers\Doctor\DoctorContoller::class,'rescheduleAppointment'])->name('appointments.reschedule');
+    Route::post('/appointments/{id}/reschedule',[\App\Http\Controllers\Doctor\DoctorContoller::class,'updaterescheduleAppointment'])->name('appointments.reschedule.update');
     Route::get('/appointments-calendar',[\App\Http\Controllers\Doctor\DoctorContoller::class,'appointmentsCalendar'])->name('appointments.calendar');
 });

@@ -94,6 +94,9 @@
                     </button>
                   </div>
                 </form>
+                <div class="mt-5 text-muted text-center">
+                    Already have an account? <a href="{{ route('portal.login') }}">Login</a>
+                  </div>
               </div>
             </div>
           </div>

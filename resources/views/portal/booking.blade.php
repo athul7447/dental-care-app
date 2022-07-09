@@ -21,16 +21,49 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 id="modalTitle" class="modal-title">Appointment Details</h4>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
-                <h4 id="modalTitle" class="modal-title"></h4>
             </div>
-            <div id="modalBody" class="modal-body"> </div>
+            <div id="modalBody" class="modal-body">
+                <table class="table table-hover table-striped">
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td id="name"></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td id="email"></td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td id="phone"></td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td id="date"></td>
+                        </tr>
+                        <tr>
+                            <td>Time</td>
+                            <td id="time"></td>
+                        </tr>
+                        <tr>
+                            <td>Note</td>
+                            <td id="note"></td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td id="status"></td>
+                        </tr>
+                    </tbody>
+               </table>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-    </div>
+</div>
 @endsection
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
@@ -42,41 +75,49 @@
           initialView: 'dayGridMonth',
           dayMaxEvents: 3, // Can also be set as a boolean
           events: [
-            { // this object will be "parsed" into an Event Object
-            title: 'Booking1', // a property!
-            start: '2022-06-01', // a property!
-            end: '2018-06-01' // a property! ** see important note below about 'end' **
-            },
-            { // this object will be "parsed" into an Event Object
-            title: 'Booking2', // a property!
-            start: '2022-06-01', // a property!
-            end: '2018-06-01' // a property! ** see important note below about 'end' **
-            },
-            { // this object will be "parsed" into an Event Object
-            title: 'Booking3', // a property!
-            start: '2022-06-01', // a property!
-            end: '2018-06-01' // a property! ** see important note below about 'end' **
-            },
-            { // this object will be "parsed" into an Event Object
-            title: 'Booking4', // a property!
-            start: '2022-06-01', // a property!
-            end: '2018-06-01' // a property! ** see important note below about 'end' **
-            },
-            { // this object will be "parsed" into an Event Object
-            title: 'Booking5', // a property!
-            start: '2022-06-01', // a property!
-            end: '2018-06-01' // a property! ** see important note below about 'end' **
-            },
-            { // this object will be "parsed" into an Event Object
-            title: 'Booking6', // a property!
-            start: '2022-06-01', // a property!
-            end: '2018-06-01' // a property! ** see important note below about 'end' **
-            },
+            @foreach ($appointments as $appointment)
+                {
+                    title: '{{ $appointment->name." / ".$appointment->email }}',
+                    name:'{{ $appointment->name }}',
+                    email:'{{ $appointment->email }}',
+                    phone:'{{ $appointment->phone }}',
+                    start:'{{ $appointment->date }}',
+                    time:'{{ $appointment->time }}',
+                    note:'{{ $appointment->note }}',
+                    status:'{{ $appointment->status }}',
+                    is_declined:'{{ $appointment->is_declined }}',
+                    date:'{{ $appointment->date }}'
+                },
+
+            @endforeach
+
         ],
         eventClick: function(info) {
-            $('#modalTitle').html(info.event.title);
-            $('#modalBody').html(info.event.title);
-            $('#eventUrl').attr('href',info.event.title);
+            var title = info.event.title;
+            var name = info.event.extendedProps.name;
+            var email = info.event.extendedProps.email;
+            var phone = info.event.extendedProps.phone;
+            var date = info.event.start;
+            var time = info.event.extendedProps.time;
+            var note = info.event.extendedProps.note;
+            var status = info.event.extendedProps.status;
+            var tempDate = new Date(date);
+            var formattedDate = moment(tempDate).format('DD-MM-YYYY');
+            $('#name').html(name);
+            $('#email').html(email);
+            $('#phone').html(phone);
+            $('#date').html(formattedDate);
+            $('#time').html(time);
+            $('#note').html(note);
+            if(info.event.extendedProps.is_declined == 1){
+                $('#status').html('<span class="badge badge-danger">Declined</span>');
+            }else{
+                if(status == 0){
+                        $('#status').html('<span class="badge badge-warning">Pending</span>');
+                }else{
+                    $('#status').html('<span class="badge badge-success">Approved</span>');
+                }
+            }
             $('#calendarModal').modal();
         }
         });
