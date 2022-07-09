@@ -30,6 +30,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                 <div class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer" id="table-2_wrapper">
                     <table class="table table-striped dataTable no-footer" id="sortable-table">
                     <thead>
+
                         <tr>
                             <th>Sl.No</th>
                         <th>Name</th>
