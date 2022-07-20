@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Doctor;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DoctorRegisterRequest;
 use App\Http\Requests\DoctorUpdateRequest;
+use App\Models\Appointment;
 use App\Repositories\portal\DoctorRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -101,6 +102,7 @@ class DoctorContoller extends Controller
 
     public function rescheduleAppointment($id)
     {
+
         $appointment=$this->doctorRepository->getAppointment($id,Auth::id());
         $doctors=$this->doctorRepository->getDoctors();
         if($appointment){
@@ -112,19 +114,24 @@ class DoctorContoller extends Controller
 
     public function updateRescheduleAppointment(Request $request,$id)
     {
+        // dd($request->all());
         $request->validate([
             'date' => 'bail|required|date',
             'time' => 'bail|required',
         ]);
+        $appointment =Appointment::where('doctor_id',Auth::id())->where('date',$request->date)->where('time',$request->time)->first();
+        if($appointment){
+            return redirect()->route('portal.appointments.reschedule',$id)->with('error','You have an appointment on this date and time');
+        }
         try{
             $result=$this->doctorRepository->updateAppointment($request,$id,Auth::user());
             if($result){
-                return redirect()->route('portal.appointments')->with('success','Appointment Reshedule Successfully');
+                return redirect()->route('portal.appointments')->with('success','Appointment reschedule Successfully');
             }else{
-                return redirect()->route('portal.appointments.reshedule',$id)->with('error','Your appointment limit is reached');
+                return redirect()->route('portal.appointments.reschedule',$id)->with('error','Your appointment limit is reached');
             }
         }catch(\Exception $e){
-            return redirect()->route('portal.appointments.reshedule',$id)->with('error','Appointment Reshedule Failed');
+            return redirect()->route('portal.appointments.reschedule',$id)->with('error','Appointment reschedule Failed');
         }
     }
 

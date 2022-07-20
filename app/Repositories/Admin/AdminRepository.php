@@ -114,7 +114,7 @@ class AdminRepository
 
     public function getAppointments($id)
     {
-        return Doctor::findorfail($id)->appointments;
+        return Doctor::findorFail($id)->appointments;
     }
 
     public function approveAppointment($doctorId,$id)

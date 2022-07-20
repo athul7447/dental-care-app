@@ -41,6 +41,10 @@ class CustomerController extends Controller
 
     public function submitAppointment(AppointmentRequest $request)
     {
+        $appointment =Appointment::where('doctor_id',$request->doctor_name)->where('date',$request->date)->where('time',$request->time)->first();
+        if($appointment){
+            return response()->json(['status'=>'error','message'=>'Please select another time slot']);
+        }
         try{
             $doctorId = $request->doctor_name;
             $doctor = Doctor::findOrFail($doctorId);

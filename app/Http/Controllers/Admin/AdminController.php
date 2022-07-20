@@ -7,6 +7,7 @@ use App\Http\Requests\AdminProfileRequest;
 use App\Http\Requests\AppointmentRequest;
 use App\Http\Requests\DoctorRegisterRequest;
 use App\Http\Requests\DoctorUpdateRequest;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Repositories\Admin\AdminRepository;
 use Illuminate\Http\JsonResponse;
@@ -232,6 +233,10 @@ class AdminController extends Controller
 
     public function updateAppointment(AppointmentRequest $request,$doctorId,$id)
     {
+        $appointment =Appointment::where('doctor_id',$request->doctor_name)->where('date',$request->date)->where('time',$request->time)->first();
+        if($appointment){
+            return redirect()->route('admin.portal.doctors.appointments.edit',[$doctorId,$id])->with('error', "Please select another time slot");
+        }
         try {
             if($this->adminRepository->updateAppointment($request,$doctorId,$id))
             {

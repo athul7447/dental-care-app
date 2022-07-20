@@ -47,6 +47,6 @@ class Doctor extends Authenticatable
 
     public function appointments()
     {
-        return $this->hasMany(Appointment::class);
+        return $this->hasMany(Appointment::class)->orderBy('created_at','desc');;
     }
 }
