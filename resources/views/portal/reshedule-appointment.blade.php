@@ -1,6 +1,7 @@
 @extends('portal.layout')
 @push('css')
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
 <style>
     .time{
         background-color: #fff !important;
@@ -54,7 +55,7 @@
                     <div class="mb-3 col-md-6">
                       <label for="date" class="form-label">Date</label>
                       <input type="date" class="form-control" id="date" name="date"
-                      value="{{ $appointment->date }}" placeholder="enter date" min="{{ date("Y-m-d") }}" max="{{ date('Y-m-d', strtotime(date("Y-m-d"). ' + 30 days')); }}">
+                      value="{{ $appointment->date }}" placeholder="enter date" >
                         @error('date')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -88,8 +89,22 @@
 @endsection
 @push('scripts')
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
 <script>
     $(document).ready(function(){
+        $("#date").flatpickr({
+    minDate: "today",
+    maxDate: `{{ date('Y-m-d', strtotime(date("Y-m-d"). ' + 30 days')); }}`,
+    dateFormat: "Y-m-d",
+    "disable": [
+        function(date) {
+           return (date.getDay() === 3 || date.getDay() === 4);  // disable weekends
+        }
+    ],
+    "locale": {
+        "firstDayOfWeek": 1 // set start day of week to Monday
+    }
+});
         $('#time').timepicker({
             interval: 30,
             minTime: '09:00',

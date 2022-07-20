@@ -1,5 +1,7 @@
 @extends('customer.layout')
 @push('css')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
+
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.18/sweetalert2.css" integrity="sha512-p06JAs/zQhPp/dk821RoSDTtxZ71yaznVju7IHe85CPn9gKpQVzvOXwTkfqCyWRdwo+e6DOkEKOWPmn8VE9Ekg=="
 crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -58,7 +60,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
               <div class="col-md-6 mb-3 mb-md-0">
                 <label class="font-weight-bold" for="date">Date</label>
                 <input type="date" id="date" class="form-control datepicker px-2" name="date" placeholder="Date of visit"
-                 value="{{ old('date') }}" min="{{ date("Y-m-d") }}" max="{{ date('Y-m-d', strtotime(date("Y-m-d"). ' + 30 days')); }}">
+                 value="{{ old('date') }}" >
                 @error('date')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
@@ -109,8 +111,24 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.18/sweetalert2.min.js" integrity="sha512-98hK38IvWQC069FFbq/la6NaBj4TGplZ118B+bFVOxsBQQL4EqKUWw9JkNh8Lem7FCGkLCxgr81q+/hRIemJCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js">
 </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>
+
 <script>
 $(document).ready(function(){
+
+    $("#date").flatpickr({
+    minDate: "today",
+    maxDate: `{{ date('Y-m-d', strtotime(date("Y-m-d"). ' + 30 days')); }}`,
+    dateFormat: "Y-m-d",
+    "disable": [
+        function(date) {
+           return (date.getDay() === 3 || date.getDay() === 4);  // disable weekends
+        }
+    ],
+    "locale": {
+        "firstDayOfWeek": 1 // set start day of week to Monday
+    }
+});
     $('#time').timepicker({
         interval: 30,
         minTime: '09:00',
@@ -139,7 +157,7 @@ $(document).ready(function(){
             date: {
                 required: true,
                 min: '{{ date("Y-m-d") }}',
-                max: '{{ date('Y-m-d', strtotime(date("Y-m-d"). ' + 30 days')); }}',
+                max: '{{ date("Y-m-d", strtotime(date("Y-m-d"). ' + 30 days')); }}',
             },
             time: {
                 required: true,
