@@ -24,7 +24,7 @@
 
   gtag('config', 'UA-94034622-3');
 </script>
-<!-- /END GA --></head>
+</head>
 
 <body>
   <div id="app">
@@ -76,6 +76,9 @@
             <li class="{{ Route::is('portal.appointments.calendar')? 'active' : '' }}">
                 <a class="nav-link" href="{{route('portal.appointments.calendar')}}"><i class="fas fa-calendar"></i> <span>Appointments Calendar</span></a>
             </li>
+            <li class="{{ Route::is('portal.patient.notes')? 'active' : '' }}">
+                <a class="nav-link" href="{{route('portal.patient.notes')}}"><i class="fas fa-user"></i> <span>Patient Notes</span></a>
+            </li>
           </ul>
          </aside>
       </div>
@@ -96,6 +99,7 @@
   <!-- General JS Scripts -->
   <script src="{{ asset('doctor_assets/modules/jquery.min.js')}}"></script>
   <script src="{{ asset('doctor_assets/modules/popper.js')}}"></script>
+
   <script src="{{ asset('doctor_assets/modules/bootstrap/js/bootstrap.min.js')}}"></script>
   <script src="{{ asset('doctor_assets/modules/nicescroll/jquery.nicescroll.min.js')}}"></script>
   <script src="{{ asset('doctor_assets/modules/moment.min.js')}}"></script>

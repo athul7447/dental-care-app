@@ -6,6 +6,7 @@ use App\Mail\DeclineMail;
 use App\Mail\RescheduleMail;
 use App\Models\Appointment;
 use App\Models\Doctor;
+use App\Models\PatientNote;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -160,6 +161,41 @@ class DoctorRepository
             return true;
         }
         return false;
+    }
+
+    public function getPatientNotes($id)
+    {
+        return Appointment::where('doctor_id',$id)->where('status',1)->get();
+    }
+
+    public function storePatientNote($request,$id)
+    {
+        $appointment=Appointment::where('id',$request->appointment_id)->where('status',1)->first();
+        $note=PatientNote::where('appointment_id',$appointment->id)->first();
+        if($appointment){
+            if(empty($note)){
+            $patientNote=PatientNote::create([
+                'appointment_id'=>$request->appointment_id,
+                'note'=>$request->note,
+                'doctor_id'=>$id,
+            ]);
+            return true;
+        }else{
+            PatientNote::where('id',$note->id)->update([
+                'appointment_id'=>$request->appointment_id,
+                'note'=>$request->note,
+                'doctor_id'=>$id,
+            ]);
+            return true;
+        }
+        }
+        return false;
+    }
+
+    public function getNote($appointmentId,$doctorId)
+    {
+        $note=PatientNote::where('appointment_id',$appointmentId)->where('doctor_id',$doctorId)->first();
+        return $note;
     }
 
 }
