@@ -68,4 +68,7 @@ Route::prefix('portal')->name('portal.')->group(function () {
     Route::get('/appointments/{id}/reschedule',[\App\Http\Controllers\Doctor\DoctorContoller::class,'rescheduleAppointment'])->name('appointments.reschedule');
     Route::post('/appointments/{id}/reschedule',[\App\Http\Controllers\Doctor\DoctorContoller::class,'updaterescheduleAppointment'])->name('appointments.reschedule.update');
     Route::get('/appointments-calendar',[\App\Http\Controllers\Doctor\DoctorContoller::class,'appointmentsCalendar'])->name('appointments.calendar');
+    Route::get('/patient-notes',[\App\Http\Controllers\Doctor\DoctorContoller::class,'patientNotes'])->name('patient.notes');
+    Route::get('/patient-notes/get-note',[\App\Http\Controllers\Doctor\DoctorContoller::class,'getNote'])->name('patient.note.get');
+    Route::post('patient-note/store',[\App\Http\Controllers\Doctor\DoctorContoller::class,'storePatientNote'])->name('patient.note.store');
 });

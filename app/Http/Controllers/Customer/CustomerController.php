@@ -45,6 +45,9 @@ class CustomerController extends Controller
         if($appointment){
             return response()->json(['status'=>'error','message'=>'Please select another time slot']);
         }
+        if(strpos($request['email'], '@gmail.com') == false){
+            return response()->json(['status'=>'error','message'=>'Please enter valid G-mail id']);
+        }
         try{
             $doctorId = $request->doctor_name;
             $doctor = Doctor::findOrFail($doctorId);

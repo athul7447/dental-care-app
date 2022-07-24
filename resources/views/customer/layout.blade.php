@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{asset('user_assets/css/aos.css')}}">
     <link rel="stylesheet" href="{{asset('user_assets/css/style.css')}}">
     <link rel="icon" type="image/x-icon" href="{{asset('admin_assets/img/favicon/fav_icon.png')}}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     @stack('css')
   </head>
   <body>
@@ -47,10 +48,21 @@
                   <span class="icon-phone mr-2"></span>
                   <span class="d-none d-md-inline-block">toothfaires01@gmail.com</span>
                 </a>
+
                 <a href="#" class="d-flex align-items-center">
                   <span class="icon-envelope mr-2"></span>
                   <span class="d-none d-md-inline-block">+1 291 2830 302</span>
                 </a>
+                <a href="{{ route('login') }}" class="d-flex align-items-center" style="padding-right: 10px;padding-left: 10px;">
+                    <button class="btn btn-dark btn-sm" style="padding: 3px;">
+                        <i class="fa fa-lock" aria-hidden="true"></i> Admin
+                      </button>
+                  </a>
+                  <a href="{{ route('portal.login') }}" class="d-flex align-items-center">
+                    <button class="btn btn-secondary btn-sm" style="padding: 3px;">
+                        <i class="fa fa-sign-in" aria-hidden="true"></i> Doctor
+                      </button>
+                  </a>
               </div>
             </div>
           </div>

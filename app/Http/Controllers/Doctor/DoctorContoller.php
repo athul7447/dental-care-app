@@ -135,4 +135,39 @@ class DoctorContoller extends Controller
         }
     }
 
+    public function patientNotes()
+    {
+        $appointments=$this->doctorRepository->getPatientNotes(Auth::id());
+        return view('portal.patient_notes',compact('appointments'));
+    }
+
+    public function getNote()
+    {
+        $appointment_id=request()->appointment_id;
+        $note=$this->doctorRepository->getNote($appointment_id,Auth::id());
+        if($note){
+            return response()->json(['status'=>'success','note'=>$note]);
+        }else{
+            return response()->json(['status'=>'error']);
+        }
+    }
+
+    public function storePatientNote(Request $request)
+    {
+        $request->validate([
+            'appointment_id' => 'bail|required|numeric',
+            'note' => 'bail|required|string',
+        ]);
+        try{
+            $result=$this->doctorRepository->storePatientNote($request,Auth::id());
+            if($result){
+                return response()->json(['status'=>'success']);
+            }else{
+                return response()->json(['status'=>'error']);
+            }
+        }catch(\Exception $e){
+            return response()->json(['status'=>'error']);
+        }
+    }
+
 }
