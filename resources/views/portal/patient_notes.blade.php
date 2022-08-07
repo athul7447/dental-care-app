@@ -11,6 +11,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
     .pagination{
         justify-content: end !important;
     }
+
     </style>
 @endpush
 @section('content')
@@ -28,7 +29,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
             <div class="card-body p-0">
               <div class="table-responsive">
                 <div class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer" id="table-2_wrapper">
-                    <table class="table table-striped dataTable no-footer" id="sortable-table">
+                    <table class="table  table-striped dataTable no-footer" id="sortable-table">
                     <thead>
 
                         <tr>
@@ -37,7 +38,9 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Date & Time</th>
-                        <th>Note</th>
+                        <th>Created at</th>
+                        <th>View</th>
+                        <th>Action</th>
                         </tr>
                     </thead>
                     <tbody class="ui-sortable">
@@ -53,8 +56,18 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                         </td>
                         <td>{{$appointment->date.'/'.$appointment->time}}</td>
                         <td>
+                            {{ $appointment->created_at }}
+                        </td>
+                        <td>
+                              <button type="button" class="btn btn-light view-notes" data-id="{{ $appointment->id }}" data-toggle="modal" data-target="#exampleModalCenter">
+                               <i class="fa fa-eye"></i>
+                               View
+                              </button>
+                        </td>
+                        <td>
                             <button type="button" class="btn btn-primary get-data" data-id="{{ $appointment->id }}" data-toggle="modal" data-target="#exampleModal">
-                                Note
+                                <i class="fa fa-edit"></i>
+                                Edit
                               </button>
                         </td>
                         </tr>
@@ -96,6 +109,55 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
       </div>
     </div>
   </div>
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-hover table-striped">
+                <tbody>
+                    <tr>
+                        <td>Appointment ID</td>
+                        <td id="appointment_id">  </td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td id="name"></td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td id="email"></td>
+                    </tr>
+                    <tr>
+                        <td>Phone</td>
+                        <td id="phone"></td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td id="date"></td>
+                    </tr>
+                    <tr>
+                        <td>Time</td>
+                        <td id="time"></td>
+                    </tr>
+                    <tr>
+                        <td>Note</td>
+                        <td id="note_view"></td>
+                    </tr>
+                </tbody>
+           </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 @push('scripts')
 <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -106,7 +168,16 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
     $(document).ready(function() {
-        $('.table').DataTable();
+        $('.dataTable').DataTable({
+        order: [[5, 'desc']],
+        columnDefs: [
+            {
+                target: 5,
+                visible: false,
+                searchable: false,
+            },
+        ],
+    });
 
     $('form').on('submit', function (e) {
         e.preventDefault();
@@ -144,6 +215,26 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 }else{
                     $('#form_id').find('textarea[name="note"]').val('');
                 }
+            }
+        });
+
+    });
+    $('.view-notes').on('click', function(){
+        var appointment_id = $(this).data('id');
+        $.ajax({
+            type: 'get',
+            url: "{{ route('portal.patient.note.get') }}",
+            data: {
+                appointment_id: appointment_id
+            },
+            success: function (data) {
+                $('#appointment_id').text('#'+data.note.appointment_id);
+                $('#name').text(data.note.appointment.name);
+                $('#email').text(data.note.appointment.email);
+                $('#phone').text(data.note.appointment.phone);
+                $('#date').text(data.note.appointment.date);
+                $('#time').text(data.note.appointment.time);
+                $('#note_view').text(data.note.note);
             }
         });
 

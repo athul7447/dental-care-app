@@ -1,6 +1,11 @@
 @extends('portal.layout')
 @push('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.css" >
+    <style>
+        /* #calendar .fc-day-wed, #calendar .fc-day-thu {
+    background-color: rgb(227, 80, 80);
+} */
+        </style>
 @endpush
 @section('content')
 <section class="section">

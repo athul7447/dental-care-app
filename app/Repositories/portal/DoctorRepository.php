@@ -55,7 +55,7 @@ class DoctorRepository
 
     public function getMyAppointments($id)
     {
-        $appointment=Appointment::where('doctor_id',$id)->get();
+        $appointment=Appointment::where('doctor_id',$id)->orderBy('created_at','desc')->get();
         return $appointment;
     }
 
@@ -165,12 +165,13 @@ class DoctorRepository
 
     public function getPatientNotes($id)
     {
-        return Appointment::where('doctor_id',$id)->where('status',1)->get();
+        $appointment= Appointment::where('doctor_id',$id)->where('is_note_added',1)->get();
+        return $appointment;
     }
 
     public function storePatientNote($request,$id)
     {
-        $appointment=Appointment::where('id',$request->appointment_id)->where('status',1)->first();
+        $appointment=Appointment::where('id',$request->appointment_id)->first();
         $note=PatientNote::where('appointment_id',$appointment->id)->first();
         if($appointment){
             if(empty($note)){
@@ -179,6 +180,8 @@ class DoctorRepository
                 'note'=>$request->note,
                 'doctor_id'=>$id,
             ]);
+            $appointment->is_note_added=1;
+            $appointment->save();
             return true;
         }else{
             PatientNote::where('id',$note->id)->update([
@@ -194,7 +197,7 @@ class DoctorRepository
 
     public function getNote($appointmentId,$doctorId)
     {
-        $note=PatientNote::where('appointment_id',$appointmentId)->where('doctor_id',$doctorId)->first();
+        $note=PatientNote::where('appointment_id',$appointmentId)->with('appointment')->where('doctor_id',$doctorId)->first();
         return $note;
     }
 
