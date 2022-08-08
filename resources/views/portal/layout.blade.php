@@ -77,7 +77,7 @@
                 <a class="nav-link" href="{{route('portal.appointments.calendar')}}"><i class="fas fa-calendar"></i> <span>Appointments Calendar</span></a>
             </li>
             <li class="{{ Route::is('portal.patient.notes')? 'active' : '' }}">
-                <a class="nav-link" href="{{route('portal.patient.notes')}}"><i class="fas fa-user"></i> <span>Patient Notes</span></a>
+                <a class="nav-link" href="{{route('portal.patient.notes')}}"><i class="fas fa-user"></i> <span>Patient Database</span></a>
             </li>
           </ul>
          </aside>

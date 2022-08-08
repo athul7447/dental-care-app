@@ -34,20 +34,42 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
           <form action="{{ route('customer.submit-appointment') }}" class="p-5 bg-white mb-5 mb-lg-0" method="post" id="appointment_form">
             @csrf
             <div class="row form-group">
-              <div class="col-md-6 mb-3 mb-md-0">
-                <label class="font-weight-bold" for="fname">Name</label>
-                <input type="text" id="fname" class="form-control" name="name" placeholder="Enter your name" value="{{ old('name') }}">
-                @error('name')
+
+              <div class="col mb-md-0 date-container">
+                <label class="font-weight-bold" for="date">Date</label>
+                <input type="date" id="date" class="form-control datepicker px-2 datepicker-input" name="date" placeholder="Date of visit"
+                value="{{ old('date') }}" >
+                @error('date')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
+            </div>
+            <div class="col timepicker-container d-none">
+                <label class="font-weight-bold timepicker" for="time">Time</label>
+                <input type="text" readonly id="time" class="form-control timepicker timepicker-input" name="time" placeholder="Time" value="{{ old('time') }}">
+                @error('time')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
               </div>
-              <div class="col-md-6">
-                <label class="font-weight-bold" for="email">Email</label>
-                <input type="email" id="email" class="form-control" name="email" placeholder="Enter your email" value="{{ old('email') }}">
-                @error('email')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-              </div>
+
+
+            </div>
+            <div class="appointment-form-container d-none">
+            <div class="row form-group">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <label class="font-weight-bold" for="fname">Name</label>
+                    <input type="text" id="fname" class="form-control" name="name" placeholder="Enter your name" value="{{ old('name') }}">
+                    @error('name')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                  </div>
+                  <div class="col-md-6">
+                    <label class="font-weight-bold" for="email">Email</label>
+                    <input type="email" id="email" class="form-control" name="email" placeholder="Enter your email" value="{{ old('email') }}">
+                    @error('email')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                  </div>
+
             </div>
             <div class="row form-group">
                 <div class="col-md-6">
@@ -56,23 +78,6 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                     @error('phone')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
-                  </div>
-              <div class="col-md-6 mb-3 mb-md-0">
-                <label class="font-weight-bold" for="date">Date</label>
-                <input type="date" id="date" class="form-control datepicker px-2" name="date" placeholder="Date of visit"
-                 value="{{ old('date') }}" >
-                @error('date')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-              </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-md-6">
-                    <label class="font-weight-bold timepicker" for="time">Time</label>
-                    <input type="text" readonly id="time" class="form-control timepicker" name="time" placeholder="Time" value="{{ old('time') }}">
-                    @error('time')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
                   </div>
               <div class="col-md-6 mb-3 mb-md-0">
                 <label class="font-weight-bold" for="treatment">Select Doctor</label>
@@ -96,11 +101,13 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                 @enderror
               </div>
             </div>
+
             <div class="row form-group">
               <div class="col-md-12">
                 <button type="submit" value="Send" class="btn btn-primary" id="submit">Submit</button>
               </div>
             </div>
+        </div>
           </form>
       </div>
     </div>
@@ -134,6 +141,7 @@ $(document).ready(function(){
         minTime: '09:00',
         maxTime: '18:00',
         startTime: '09:00',
+        change: timeOnChange,
     });
 
     if ($("#appointment_form").length > 0) {
@@ -237,6 +245,14 @@ $(document).ready(function(){
             });
         }
     })
+    }
+
+    $(document).on('change','.datepicker-input',function(){
+        $('.timepicker-container').removeClass('d-none');
+    });
+    function timeOnChange()
+    {
+        $('.appointment-form-container').removeClass('d-none');
     }
 });
 </script>

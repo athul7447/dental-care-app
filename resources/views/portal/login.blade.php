@@ -65,6 +65,9 @@
             <div class="mt-5 text-muted text-center">
               Don't have an account? <a href="{{ route('portal.register') }}">Create One</a>
             </div>
+            <div class="mt-5 text-muted text-center">
+              Back to home? <a href="{{ route('customer.index') }}">Click Here!</a>
+            </div>
 
           </div>
         </div>

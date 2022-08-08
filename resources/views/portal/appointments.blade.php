@@ -38,6 +38,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                         <th>Phone</th>
                         <th>Date & Time</th>
                         <th>Note</th>
+                        <th>Created at</th>
                         <th>Action</th>
                         </tr>
                     </thead>
@@ -55,25 +56,30 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                         <td>{{$appointment->date.'/'.$appointment->time}}</td>
                         <td>{{$appointment->note}}</td>
                         <td>
-                            @if($appointment->date >= date('Y-m-d'))
-                                @if($appointment->is_declined == 1)
-                                    <span class="badge badge-danger">Declined</span>
-                                @else
-                                    @if($appointment->status == 0)
-                                        <a href="{{ route('portal.appointments.approve',$appointment->id) }}">
-                                            <button class="btn btn-primary btn-sm" >Approve</button>
-                                        </a>
-                                        <a href="{{ route('portal.appointments.decline',$appointment->id) }}"><button class="btn btn-danger btn-sm">Decline</button></a>
-                                        <a href="{{ route('portal.appointments.reschedule',$appointment->id) }}">
-                                            <button class="btn btn-warning btn-sm">Reschedule</button>
-                                        </a>
-                                    @else
-                                        <span class="badge badge-success" >Approved</span>
-                                    @endif
-                                @endif
+                            {{ $appointment->created_at }}
+                        </td>
+                        <td>
+                            @if($appointment->is_declined == 1)
+                                <span class="badge badge-danger">Declined</span>
+                            @elseif($appointment->status ==0 && $appointment->date >= date('Y-m-d'))
+                                <a href="{{ route('portal.appointments.approve',$appointment->id) }}">
+                                    <button class="btn btn-primary btn-sm" >Approve</button>
+                                </a>
+                                <a href="{{ route('portal.appointments.decline',$appointment->id) }}">
+                                    <button class="btn btn-danger btn-sm">Decline</button>
+                                </a>
+                                <a href="{{ route('portal.appointments.reschedule',$appointment->id) }}">
+                                    <button class="btn btn-warning btn-sm">Reschedule</button>
+                                </a>
+                                <button type="button" class="btn btn-light btn-sm get-data" data-id="{{ $appointment->id }}" data-toggle="modal" data-target="#exampleModal">
+                                    Note
+                                  </button>
+                            @elseif($appointment->status ==1)
+                                <span class="badge badge-success" >Approved</span>
                             @else
                                 <span class="badge badge-danger">Expired</span>
                             @endif
+
                             </td>
                         </tr>
                         @endforeach
@@ -87,6 +93,33 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
       </div>
 
 </section>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Patient Notes</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{ route('portal.patient.note.store') }}" method="POST" id="form_id">
+        <div class="modal-body">
+
+            @csrf
+            <div class="form-group">
+                <label for="note">Note</label>
+                <textarea class="form-control" id="note" name="note" rows="4" required></textarea>
+            </div>
+            <input type="hidden" name="appointment_id" value="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
 @endsection
 @push('scripts')
 <script src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -96,7 +129,16 @@ integrity="sha512-98hK38IvWQC069FFbq/la6NaBj4TGplZ118B+bFVOxsBQQL4EqKUWw9JkNh8Le
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function() {
-        $('.table').DataTable();
+        $('.table').DataTable({
+        order: [[6, 'desc']],
+        columnDefs: [
+            {
+                target: 6,
+                visible: false,
+                searchable: false,
+            },
+        ],
+    });
         @if(session('success'))
             Swal.fire(
                     'Success!',
@@ -111,5 +153,46 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 );
         @endif
     } );
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+        $.ajax({
+        type: 'post',
+        url: "{{ route('portal.patient.note.store') }}",
+        data: $('form').serialize(),
+        success: function (data) {
+            data.status == 'success' ? Swal.fire(
+                    'Success!',
+                    'Suceessfully Added',
+                    'success'
+                    ) : Swal.fire(
+                    'Error!',
+                    'something went wrong',
+                    'error'
+                    );
+        }
+        });
+    });
+
+    $('.get-data').on('click', function(){
+        var appointment_id = $(this).data('id');
+        $('input[name="appointment_id"]').val(appointment_id);
+        $.ajax({
+            type: 'get',
+            url: "{{ route('portal.patient.note.get') }}",
+            data: {
+                appointment_id: appointment_id
+            },
+            success: function (data) {
+                var note = data.note;
+                $('input[name="appointment_id"]').val(appointment_id);
+                if(note){
+                $('#form_id').find('textarea[name="note"]').val(data.note.note);
+                }else{
+                    $('#form_id').find('textarea[name="note"]').val('');
+                }
+            }
+        });
+
+    });
     </script>
 @endpush
