@@ -55,7 +55,7 @@
                         <td>{{ $appointment->phone }}</td>
                         <td>{{ $appointment->date."/".$appointment->time }}</td>
                         <td >{{ $appointment->note }}</td>
-                        <td>
+                        {{-- <td>
                             @if($appointment->date >= date('Y-m-d'))
                                 @if($appointment->is_declined == 1)
                                 <a href="{{ route('admin.portal.doctors.appointments.decline',[$doctorId,$appointment->id]) }}">
@@ -77,7 +77,28 @@
                             @else
                                 <span class="badge rounded-pill bg-danger">Expired</span>
                             @endif
-                        </td>
+                        </td> --}}
+                        <td>
+                            @if($appointment->is_declined == 1)
+                            <a href="{{ route('admin.portal.doctors.appointments.decline',[$doctorId,$appointment->id]) }}">
+                                <button class="btn btn-warning btn-sm">Declined</button>
+                            </a>
+                            @elseif($appointment->status ==0 && $appointment->date >= date('Y-m-d'))
+                                <a href="{{ route('admin.portal.doctors.appointments.approve',[$doctorId,$appointment->id]) }}">
+                                    <button class="btn btn-primary btn-sm" >Approve</button>
+                                </a>
+                                <a href="{{ route('admin.portal.doctors.appointments.decline',[$doctorId,$appointment->id]) }}">
+                                    <button class="btn btn-danger btn-sm">Decline</button>
+                                </a>
+                            @elseif($appointment->status ==1)
+                                <a href="{{ route('admin.portal.doctors.appointments.approve',[$doctorId,$appointment->id]) }}">
+                                <button class="btn btn-success btn-sm" >Approved</button>
+                                </a>
+                            @else
+                            <span class="badge rounded-pill bg-danger">Expired</span>
+                            @endif
+
+                            </td>
                         <td>
                             <a href="{{ route('admin.portal.doctors.appointments.edit',[$doctorId,$appointment->id]) }}" class="btn btn-sm btn-primary">
                                 <i class="bx bx-edit"></i>
