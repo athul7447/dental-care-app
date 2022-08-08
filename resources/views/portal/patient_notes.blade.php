@@ -86,7 +86,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Patient Notes</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Patient Notes Edit</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -97,7 +97,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
             @csrf
             <div class="form-group">
                 <label for="note">Note</label>
-                <textarea class="form-control" id="note" name="note" rows="4" required></textarea>
+                <textarea class="form-control" id="note" name="note" rows="10" style="min-height: 300px;" required></textarea>
             </div>
             <input type="hidden" name="appointment_id" value="">
         </div>
@@ -113,7 +113,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Patient note view</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
