@@ -76,6 +76,15 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                                   </button>
                             @elseif($appointment->status ==1)
                                 <span class="badge badge-success" >Approved</span>
+                                @if($appointment->is_note_added ==1)
+                                <button type="button" class="btn btn-light view-notes" data-id="{{ $appointment->id }}" data-toggle="modal" data-target="#exampleModalCenter">
+                                    View Note
+                                </button>
+                                @else
+                                <button type="button" class="btn btn-light btn-sm get-data" data-id="{{ $appointment->id }}" data-toggle="modal" data-target="#exampleModal">
+                                    Note
+                                  </button>
+                                @endif
                             @else
                                 <span class="badge badge-danger">Expired</span>
                             @endif
@@ -117,6 +126,56 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
           <button type="submit" class="btn btn-primary">Save</button>
         </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Patient note view</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-hover table-striped">
+                <tbody>
+                    <tr>
+                        <td>Appointment ID</td>
+                        <td id="appointment_id">  </td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td id="name"></td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td id="email"></td>
+                    </tr>
+                    <tr>
+                        <td>Phone</td>
+                        <td id="phone"></td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td id="date"></td>
+                    </tr>
+                    <tr>
+                        <td>Time</td>
+                        <td id="time"></td>
+                    </tr>
+                    <tr>
+                        <td>Note</td>
+                        <td id="note_view"></td>
+                    </tr>
+                </tbody>
+           </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
@@ -190,6 +249,27 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 }else{
                     $('#form_id').find('textarea[name="note"]').val('');
                 }
+            }
+        });
+
+    });
+
+    $('.view-notes').on('click', function(){
+        var appointment_id = $(this).data('id');
+        $.ajax({
+            type: 'get',
+            url: "{{ route('portal.patient.note.get') }}",
+            data: {
+                appointment_id: appointment_id
+            },
+            success: function (data) {
+                $('#appointment_id').text('#'+data.note.appointment_id);
+                $('#name').text(data.note.appointment.name);
+                $('#email').text(data.note.appointment.email);
+                $('#phone').text(data.note.appointment.phone);
+                $('#date').text(data.note.appointment.date);
+                $('#time').text(data.note.appointment.time);
+                $('#note_view').text(data.note.note);
             }
         });
 
