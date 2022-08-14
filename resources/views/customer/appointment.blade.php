@@ -43,6 +43,18 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
+            <div class="col doctor-container d-none">
+                <label class="font-weight-bold" for="treatment">Select Doctor</label>
+                <select name="doctor_name" id="doctor_name" class="form-control doctor-name">
+                  <option value="">select</option>
+                  @foreach ($doctors as $doctor)
+                    <option value="{{ $doctor->id }}" @if(old('doctor_name')==$doctor->id) selected @endif>{{ $doctor->name }}</option>
+                  @endforeach
+                </select>
+                @error('doctor_name')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+              </div>
             <div class="col timepicker-container d-none">
                 <label class="font-weight-bold timepicker" for="time">Time</label>
                 <input type="text" readonly id="time" class="form-control timepicker timepicker-input" name="time" placeholder="Time" value="{{ old('time') }}">
@@ -55,42 +67,27 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
             </div>
             <div class="appointment-form-container d-none">
             <div class="row form-group">
-                <div class="col-md-6 mb-3 mb-md-0">
+                <div class="col ">
                     <label class="font-weight-bold" for="fname">Name</label>
                     <input type="text" id="fname" class="form-control" name="name" placeholder="Enter your name" value="{{ old('name') }}">
                     @error('name')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                   </div>
-                  <div class="col-md-6">
+                  <div class="col">
                     <label class="font-weight-bold" for="email">Email</label>
                     <input type="email" id="email" class="form-control" name="email" placeholder="Enter your email" value="{{ old('email') }}">
                     @error('email')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                   </div>
-
-            </div>
-            <div class="row form-group">
-                <div class="col-md-6">
+                <div class="col">
                     <label class="font-weight-bold" for="lname">Phone</label>
                     <input type="text" id="lname" class="form-control" name="phone" placeholder="Enter your phone" value="{{ old('phone') }}">
                     @error('phone')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                   </div>
-              <div class="col-md-6 mb-3 mb-md-0">
-                <label class="font-weight-bold" for="treatment">Select Doctor</label>
-                <select name="doctor_name" id="doctor_name" class="form-control">
-                  <option value="">select</option>
-                  @foreach ($doctors as $doctor)
-                    <option value="{{ $doctor->id }}" @if(old('doctor_name')==$doctor->id) selected @endif>{{ $doctor->name }}</option>
-                  @endforeach
-                </select>
-                @error('doctor_name')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-              </div>
             </div>
             <div class="row form-group">
               <div class="col-md-12">
@@ -232,7 +229,9 @@ $(document).ready(function(){
                             'Success!',
                             response.success,
                             'success'
-                        );
+                        ).then(function(){
+                            window.location.href = "";
+                        });
                         $('#appointment_form')[0].reset();
                     }else{
                         Swal.fire(
@@ -248,11 +247,34 @@ $(document).ready(function(){
     }
 
     $(document).on('change','.datepicker-input',function(){
+        $('.doctor-container').removeClass('d-none');
+    });
+    $(document).on('change','.doctor-name',function(){
         $('.timepicker-container').removeClass('d-none');
     });
     function timeOnChange()
     {
-        $('.appointment-form-container').removeClass('d-none');
+        $.ajax({
+                url: "{{ route('customer.doctor-availability') }}",
+                type: 'GET',
+                data: {
+                    'date': $('#date').val(),
+                    'doctor_id': $('#doctor_name').val(),
+                    'time': $('#time').val(),
+                },
+                success: function( response ) {
+                    console.log(response);
+                    if(response.status=='success'){
+                        $('.appointment-form-container').removeClass('d-none');
+                    }else{
+                        Swal.fire(
+                            'Error!',
+                            'Time slot not available',
+                            'error'
+                        );
+                    }
+                }
+            });
     }
 });
 </script>

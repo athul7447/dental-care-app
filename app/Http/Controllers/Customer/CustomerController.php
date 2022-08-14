@@ -74,4 +74,14 @@ class CustomerController extends Controller
         }
 
     }
+
+    public function doctorAvailability(Request $request)
+    {
+        $appointment =Appointment::where('doctor_id',$request->doctor_id)->where('date',$request->date)->where('time',$request->time)->first();
+        if($appointment){
+            return response()->json(['status'=>'error','message'=>'Please select another time slot']);
+        }else{
+            return response()->json(['status'=>'success']);
+        }
+    }
 }

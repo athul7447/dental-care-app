@@ -26,10 +26,20 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
         <div class="col">
           <div class="card">
             <div class="card-body p-0">
+                @if (session('success'))
+                <div class="alert alert-success alert-dismissible show fade">
+                    <div class="alert-body">
+                      <button class="close" data-dismiss="alert">
+                        <span>×</span>
+                      </button>
+                      {{ session('success') }}
+                    </div>
+                  </div>
+            @endif
               <div class="table-responsive">
                 <div class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer" id="table-2_wrapper">
                     <table class="table table-striped dataTable no-footer" id="sortable-table">
-                    <thead>
+                    <thead class="text-center">
 
                         <tr>
                             <th>ID</th>
@@ -39,10 +49,11 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                         <th>Date & Time</th>
                         <th>Note</th>
                         <th>Created at</th>
+                        <th>Status</th>
                         <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody class="ui-sortable">
+                    <tbody class="ui-sortable text-center">
                         @foreach ($appointments as $appointment)
                         <tr>
                             <td>#{{ $appointment->id }}</td>
@@ -59,8 +70,18 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                             {{ $appointment->created_at }}
                         </td>
                         <td>
+                            @if ($appointment->status == 1)
+                                <span class="badge badge-success">Approved</span>
+                            @elseif ($appointment->is_declined == 1)
+                                <span class="badge badge-warning">Declined</span>
+                            @elseif ($appointment->status == 0 && $appointment->date >= date('Y-m-d'))
+                                <span class="badge badge-warning">Processing</span>
+                            @elseif($appointment->status == 0 && $appointment->date < date('Y-m-d'))
+                                <span class="badge badge-danger">Expired</span>
+                            @endif
+                        </td>
+                        <td>
                             @if($appointment->is_declined == 1)
-                                <span class="badge badge-danger">Declined</span>
                             @elseif($appointment->status ==0 && $appointment->date >= date('Y-m-d'))
                                 <a href="{{ route('portal.appointments.approve',$appointment->id) }}">
                                     <button class="btn btn-primary btn-sm" >Approve</button>
@@ -71,13 +92,23 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                                 <a href="{{ route('portal.appointments.reschedule',$appointment->id) }}">
                                     <button class="btn btn-warning btn-sm">Reschedule</button>
                                 </a>
+                                @if($appointment->is_note_added ==1)
+                                <button type="button" class="btn btn-light btn-sm view-notes" data-id="{{ $appointment->id }}" data-toggle="modal" data-target="#exampleModalCenter">
+                                    View Note
+                                </button>
+                                @endif
                                 <button type="button" class="btn btn-light btn-sm get-data" data-id="{{ $appointment->id }}" data-toggle="modal" data-target="#exampleModal">
                                     Note
                                   </button>
                             @elseif($appointment->status ==1)
-                                <span class="badge badge-success" >Approved</span>
+                                <a href="{{ route('portal.appointments.decline',$appointment->id) }}">
+                                    <button class="btn btn-danger btn-sm">Decline</button>
+                                </a>
+                                <a href="{{ route('portal.appointments.reschedule',$appointment->id) }}">
+                                    <button class="btn btn-warning btn-sm">Reschedule</button>
+                                </a>
                                 @if($appointment->is_note_added ==1)
-                                <button type="button" class="btn btn-light view-notes" data-id="{{ $appointment->id }}" data-toggle="modal" data-target="#exampleModalCenter">
+                                <button type="button" class="btn btn-light btn-sm view-notes" data-id="{{ $appointment->id }}" data-toggle="modal" data-target="#exampleModalCenter">
                                     View Note
                                 </button>
                                 @else
@@ -86,7 +117,6 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
                                   </button>
                                 @endif
                             @else
-                                <span class="badge badge-danger">Expired</span>
                             @endif
 
                             </td>

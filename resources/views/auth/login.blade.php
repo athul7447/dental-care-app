@@ -71,6 +71,9 @@
                     @endif
                 </div>
               </form>
+              <div class="mt-5 text-muted text-center">
+                Back to home? <a href="{{ route('customer.index') }}">Click Here!</a>
+              </div>
             </div>
           </div>
           <!-- /Register -->
