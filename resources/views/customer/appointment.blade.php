@@ -263,7 +263,6 @@ $(document).ready(function(){
                     'time': $('#time').val(),
                 },
                 success: function( response ) {
-                    console.log(response);
                     if(response.status=='success'){
                         $('.appointment-form-container').removeClass('d-none');
                     }else{
