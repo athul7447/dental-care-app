@@ -86,9 +86,10 @@ class DoctorRepository
 
     public function declineAppointment($id,$doctor_id)
     {
-        $appointment=Appointment::where('id',$id)->where('status',0)->where('doctor_id',$doctor_id)->first();
+        $appointment=Appointment::where('id',$id)->where('doctor_id',$doctor_id)->first();
         if($appointment){
             $appointment->is_declined=1;
+            $appointment->status= 0;
             $appointment->save();
             $mailData=[
                 'name'=>$appointment->name,
@@ -139,7 +140,6 @@ class DoctorRepository
     {
         $date=date('Y-m-d',strtotime($request->date));
         $doctorAppointment=Appointment::where('doctor_id',$doctor->id)
-                            ->where('status',0)
                             ->where('is_declined',0)
                             ->where('date',$date)->count();
         if($doctorAppointment > $doctor->appointment_per_day){
@@ -157,7 +157,7 @@ class DoctorRepository
                 'time'=>$appointment->time,
                 'doctor'=>$doctor->name,
             ];
-            Mail::to($appointment->email)->send(new RescheduleMail($mailData));
+            // Mail::to($appointment->email)->send(new RescheduleMail($mailData));
             return true;
         }
         return false;
